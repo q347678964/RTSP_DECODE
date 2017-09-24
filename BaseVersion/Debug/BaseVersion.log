@@ -1,4 +1,4 @@
-﻿Build started 2017/9/24 11:30:18.
+﻿Build started 2017/9/24 11:37:18.
      1>Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\BaseVersion.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -22,25 +22,31 @@
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
      1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(162): warning C4996: 'AVStream::codec': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(168): warning C4996: 'AVStream::codec': 被声明为已否决
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(167): warning C4996: 'AVStream::codec': 被声明为已否决
+                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(167): warning C4996: 'AVStream::codec': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
      1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(169): warning C4996: 'AVStream::codec': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(170): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(170): warning C4996: 'AVStream::codec': 被声明为已否决
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(172): warning C4996: 'AVStream::codec': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
      1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(173): warning C4996: 'AVStream::codec': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(174): warning C4996: 'AVStream::codec': 被声明为已否决
+                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(174): warning C4996: 'AVStream::codec': 被声明为已否决
+                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
      1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(177): warning C4996: 'AVStream::codec': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(187): warning C4996: 'avpicture_get_size': 被声明为已否决
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(181): warning C4996: 'AVStream::codec': 被声明为已否决
+                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(191): warning C4996: 'avpicture_get_size': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(5561) : 参见“avpicture_get_size”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(192): warning C4996: 'avpicture_fill': 被声明为已否决
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(196): warning C4996: 'avpicture_fill': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(5546) : 参见“avpicture_fill”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(208): warning C4996: 'avcodec_decode_video2': 被声明为已否决
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(212): warning C4996: 'avcodec_decode_video2': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(4901) : 参见“avcodec_decode_video2”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(226): warning C4996: 'av_free_packet': 被声明为已否决
+     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(230): warning C4996: 'av_free_packet': 被声明为已否决
                  f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(4558) : 参见“av_free_packet”的声明
        ResourceCompile:
          All outputs are up-to-date.

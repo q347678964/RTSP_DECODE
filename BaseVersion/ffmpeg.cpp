@@ -164,6 +164,10 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 
 		TempCString.Format(_T("时钟基准.num:%d,时钟基准.den:%d\r\n"),pAVStream_InputVideo->time_base.num,pAVStream_InputVideo->time_base.den);
 		pffmpeg->Printf(TempCString);
+		TempCString.Format(_T("帧率Numerator:%d,帧率Denominator:%d\r\n"),pAVStream_InputVideo->codec->framerate.num,pAVStream_InputVideo->codec->framerate.den);
+		pffmpeg->Printf(TempCString);
+		TempCString.Format(_T("比特率:%d\r\n"),pAVStream_InputVideo->codec->bit_rate);
+		pffmpeg->Printf(TempCString);
 
 		VideoWidth = pAVStream_InputVideo->codec->width;
 		VideoHeight = pAVStream_InputVideo->codec->height;
