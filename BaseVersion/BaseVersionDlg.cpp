@@ -109,7 +109,10 @@ BOOL CBaseVersionDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 	// TODO: 在此添加额外的初始化代码
+
+	SetDlgItemText(IDC_EDIT_URL,(CString)"rtsp://192.168.0.103:8888/stream");
 	this->Printf((CString)("[Dialog]初始化窗体完成!\r\n"));
+
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -142,23 +145,14 @@ void CBaseVersionDlg::DlgPaintInit(void)
 		ScreenToClient(RectTemp);
 
 		pWnd[1] = GetDlgItem(IDC_EDIT_Path);
-		pWnd[1]->SetWindowPos( NULL,RectTemp.right+10,10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//路径窗口，只改变坐标，不改变大小
+		pWnd[1]->SetWindowPos( NULL,RectTemp.right+10,10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//路径窗口，放到调试窗口右边，只改变坐标，不改变大小
 		pWnd[1]->GetWindowRect(RectTemp);//获取目标在屏幕上的坐标，需要转换到窗体坐标
 		ScreenToClient(RectTemp);
 
 		pWnd[2] = GetDlgItem(IDC_BUTTON_OpenFile);
-		pWnd[2]->SetWindowPos( NULL,RectTemp.right+10,10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//路径打开按钮，只改变坐标，不改变大小
+		pWnd[2]->SetWindowPos( NULL,RectTemp.right+10,10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//路径打开按钮，放到路径打开按钮右边，只改变坐标，不改变大小
 		((CButton *)GetDlgItem(IDC_BUTTON_OpenFile))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
-		pWnd[2]->GetWindowRect(RectTemp);//获取目标在屏幕上的坐标，需要转换到窗体坐标
-		ScreenToClient(RectTemp);
-
-		pWnd[3] = GetDlgItem(IDC_BUTTON_Test);
-		pWnd[3]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//测试按钮，只改变坐标，不改变大小
-		((CButton *)GetDlgItem(IDC_BUTTON_Test))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
-		//等效于这三句AfxGetApp()->LoadIcon(IDI_ICON1) 加载icon
-		//((CMFCButton *)GetDlgItem(IDC_BUTTON_OpenFile)) 获取按钮句柄
-		//SetIcon 按钮操作函数
-
+	
 		pWnd[1]->GetWindowRect(RectTemp);//进度条放在路径窗口下面
 		ScreenToClient(RectTemp);
 		pWnd[3] = GetDlgItem(IDC_PROGRESS1);
@@ -167,17 +161,36 @@ void CBaseVersionDlg::DlgPaintInit(void)
 		((CProgressCtrl *)GetDlgItem(IDC_PROGRESS1))->SetStep(1);//进度条步进1
 		((CProgressCtrl *)GetDlgItem(IDC_PROGRESS1))->SetPos(0);//当前进度0
 
-		pWnd[3]->GetWindowRect(RectTemp);//RTSP开始按钮放到进度条下面
+		pWnd[2]->GetWindowRect(RectTemp);//测试按钮,放到打开按钮下面
 		ScreenToClient(RectTemp);
-		pWnd[3] = GetDlgItem(IDC_BUTTON_RTSPStart);
-		pWnd[3]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP开始按钮，只改变坐标，不改变大小
+		pWnd[4] = GetDlgItem(IDC_BUTTON_Test);
+		pWnd[4]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//测试按钮，，只改变坐标，不改变大小
+		((CButton *)GetDlgItem(IDC_BUTTON_Test))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
+		//等效于这三句AfxGetApp()->LoadIcon(IDI_ICON1) 加载icon
+		//((CMFCButton *)GetDlgItem(IDC_BUTTON_OpenFile)) 获取按钮句柄
+		//SetIcon 按钮操作函数
+
+		pWnd[3]->GetWindowRect(RectTemp);//URL窗口放到进度条下面
+		ScreenToClient(RectTemp);
+		pWnd[5] = GetDlgItem(IDC_EDIT_URL);
+		pWnd[5]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//URL窗口，只改变坐标，不改变大小
+		
+		pWnd[4]->GetWindowRect(RectTemp);//RTSP开始按钮放到测试按钮下面
+		ScreenToClient(RectTemp);
+		pWnd[5] = GetDlgItem(IDC_BUTTON_RTSPStart);
+		pWnd[5]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP开始按钮，只改变坐标，不改变大小
 		((CButton *)GetDlgItem(IDC_BUTTON_RTSPStart))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
 
-		pWnd[3]->GetWindowRect(RectTemp);//RTSP结束按钮放到开始下面
+		pWnd[5]->GetWindowRect(RectTemp);//RTSP结束按钮放到开始下面
 		ScreenToClient(RectTemp);
-		pWnd[4] = GetDlgItem(IDC_BUTTON_RTSPEnd);
-		pWnd[4]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP结束按钮，只改变坐标，不改变大小
+		pWnd[6] = GetDlgItem(IDC_BUTTON_RTSPEnd);
+		pWnd[6]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP结束按钮，只改变坐标，不改变大小
 		((CButton *)GetDlgItem(IDC_BUTTON_RTSPEnd))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
+
+		pWnd[5]->GetWindowRect(RectTemp);//帧计数窗口放在开始按钮右边
+		ScreenToClient(RectTemp);
+		pWnd[7] = GetDlgItem(IDC_EDIT_FrameShow);
+		pWnd[7]->SetWindowPos( NULL,RectTemp.right+10,RectTemp.top,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP结束按钮，只改变坐标，不改变大小
 
 		//mImage.Draw(GetDC()->GetSafeHdc(),CRect(0,0,WinDlgWidth,WinDlgHeight));//背景，不能用这种方法绘制，会闪烁
 
@@ -290,10 +303,22 @@ HBRUSH CBaseVersionDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr; 
 }
 
-
-void CBaseVersionDlg::ProcessCtrl(int Num)
+void CBaseVersionDlg::UIOperationCB(int ControlID,int Num)
 {
-	((CProgressCtrl *)GetDlgItem(IDC_PROGRESS1))->SetPos(Num);//进度条数值范围0~100
+	switch(ControlID){
+		case IDC_PROGRESS1:
+			((CProgressCtrl *)GetDlgItem(IDC_PROGRESS1))->SetPos(Num);//进度条数值范围0~100
+		break;
+	}
+}
+
+void CBaseVersionDlg::UIOperationCB(int ControlID,CString CStringData)
+{
+	switch(ControlID){
+		case IDC_EDIT_FrameShow:
+			SetDlgItemText(IDC_EDIT_FrameShow,CStringData);
+		break;
+	}
 }
 
 BOOL CBaseVersionDlg::Printf(CString string){
@@ -336,10 +361,14 @@ void CBaseVersionDlg::OnBnClickedButtonTest()
 	Ex.WinCMDTest();
 }
 
+
 void CBaseVersionDlg::OnBnClickedButtonRtspstart()
 {
+	CString RTSPURLCString;
+	GetDlgItemText(IDC_EDIT_URL,RTSPURLCString);
+
 	FFMPEGHdlr.ffmpeg_init();
-	FFMPEGHdlr.ffmpeg_start();
+	FFMPEGHdlr.ffmpeg_start(RTSPURLCString);
 }
 
 

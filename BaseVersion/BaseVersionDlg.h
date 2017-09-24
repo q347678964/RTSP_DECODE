@@ -36,7 +36,8 @@ public:
 
 	void CBaseVersionDlg::DlgPaintInit(void);
 	BOOL CBaseVersionDlg::Printf(CString string);
-	void CBaseVersionDlg::ProcessCtrl(int Num);
+	void CBaseVersionDlg::UIOperationCB(int ControlID,int Num);
+	void CBaseVersionDlg::UIOperationCB(int ControlID,CString CStringData);
 
 	afx_msg void OnBnClickedButtonOpenfile();
 	afx_msg void OnBnClickedButtonTest();

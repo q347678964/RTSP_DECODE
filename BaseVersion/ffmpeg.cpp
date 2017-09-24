@@ -41,6 +41,14 @@ void ffmpeg::Printf(CString Context){
     CBaseVersionDlg *MainDlg = (CBaseVersionDlg *)AfxGetMainWnd();
 	MainDlg->Printf(Context);
 }
+
+void ffmpeg::UpdateFrameInfo(unsigned int Num)
+{
+	CString TempCString;
+	TempCString.Format(_T("%u"),Num);
+    CBaseVersionDlg *MainDlg = (CBaseVersionDlg *)AfxGetMainWnd();
+	MainDlg->UIOperationCB(IDC_EDIT_FrameShow,TempCString);
+}
 //保存RGB24到BMP文件的函数  
 void ffmpeg::SaveAsBMP(AVFrame *pFrameRGB, int width, int height, int index, int bpp)  
 {  
@@ -98,16 +106,23 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 	pffmpeg->g_FrameCounter = 0;
     /* should set to NULL so that avformat_open_input() allocate a new one */
     pAVFormatContext_Input = NULL;
-	pffmpeg->Printf((CString)("设置URL为rtsp://192.168.0.103:8888/stream\r\n"));
-	pffmpeg->Printf((CString)("设置保存文件到Output/Temp.H264\r\n"));
-    char RTSPUrl[] = "rtsp://192.168.0.103:8888/stream";
-	//char RTSPUrl[] = "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov";
+
+	USES_CONVERSION;
+	char *g_URLString = T2A(pffmpeg->g_URLCString);
+
+	TempCString.Format(_T("设置URL:%s\r\n"),(CString)g_URLString);
+	pffmpeg->Printf(TempCString);
+	TempCString.Format(_T("设置保存文件到:%s\r\n"),(CString)CFG_SAVE_H264_PATH);
+	pffmpeg->Printf(TempCString);
 	CFile H264File(_T(CFG_SAVE_H264_PATH),CFile::modeCreate | CFile::modeReadWrite);
 
 	TempCString.Format(_T("打开URL获取一个输入AVFormat\r\n"));
 	pffmpeg->Printf(TempCString);
 	/* 打开URL */
-    if (avformat_open_input(&pAVFormatContext_Input, RTSPUrl, NULL, NULL)!=0)
+    char RTSPUrl[] = "rtsp://192.168.0.103:8888/stream";
+	//char RTSPUrl[] = "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov";
+	//if (avformat_open_input(&pAVFormatContext_Input, RTSPUrl, NULL, NULL)!=0)
+    if (avformat_open_input(&pAVFormatContext_Input, g_URLString, NULL, NULL)!=0)
     {
         pffmpeg->Printf((CString)("avformat_open_input failed\r\n"));
         return -1;
@@ -182,7 +197,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 	int frameFinished;
     AVPacket AVPackage_Input;	//数据最初开始是AVPackage的格式，里面存放H264
     
-    while (!pffmpeg->g_StartRecvRTSPFlag)
+    while (pffmpeg->g_StartRecvRTSPFlag)
     {
 
 		av_init_packet(&AVPackage_Input);
@@ -200,7 +215,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 				if(pffmpeg->g_FrameCounter>100&&pffmpeg->g_FrameCounter<120)
 					pffmpeg->SaveAsBMP(pFrameRGB, pAVCodecContext_Input->width, pAVCodecContext_Input->height, pffmpeg->g_FrameCounter, 24);  //将RGB24的数据写入BMP
 
-				TRACE(_T("Frame %lu\n"), pffmpeg->g_FrameCounter);
+				//TRACE(_T("Frame %lu\n"), pffmpeg->g_FrameCounter);
 			
 			}
 			
@@ -215,15 +230,26 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 	pffmpeg->Printf((CString)("RecvRTSPThread线程结束\r\n"));
     return 0;
 }
+DWORD WINAPI UpdateUIThread(LPVOID pParam){
+	ffmpeg *pffmpeg = (ffmpeg*)pParam;
+	while(pffmpeg->g_StartRecvRTSPFlag){
+		pffmpeg->UpdateFrameInfo(pffmpeg->g_FrameCounter);
+		Sleep(500);
+	}
+	return 0;
+}
 
+void ffmpeg::ffmpeg_start(CString URLCString)
+{
+
+	g_URLCString = URLCString;
+	g_StartRecvRTSPFlag = true;
+	AfxBeginThread((AFX_THREADPROC)RecvRTSPThread,this,THREAD_PRIORITY_HIGHEST);
+	AfxBeginThread((AFX_THREADPROC)UpdateUIThread,this,THREAD_PRIORITY_HIGHEST);
+}
 void ffmpeg::ffmpeg_end(void)
 {
-	g_StartRecvRTSPFlag = true;
-}
-void ffmpeg::ffmpeg_start(void)
-{
 	g_StartRecvRTSPFlag = false;
-	AfxBeginThread((AFX_THREADPROC)RecvRTSPThread,this,THREAD_PRIORITY_HIGHEST);
 }
 void ffmpeg::ffmpeg_init(void)
 {

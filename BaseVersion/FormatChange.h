@@ -10,5 +10,6 @@ public:
 	void CImage2CBitmap(CImage &Image,CBitmap &Bitmap);
 	void FormatChange::CBitmap2Hbitmap(CBitmap &Bitmap,HBITMAP &Hbitmap);
 	void FormatChange::Hbitmap2CBitmap(HBITMAP &Hbitmap,CBitmap &Bitmap);
+	void FormatChange::CString2CharArr(CString CStringData,char **CharData);
 };
 #endif

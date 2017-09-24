@@ -2,7 +2,7 @@
 #include "resource.h"
 
 #include "FormatChange.h"
-
+#include <string>
 
 FormatChange::FormatChange(){
 

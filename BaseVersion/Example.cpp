@@ -27,7 +27,7 @@ void Example::Printf(CString Context){
 void Example::ProcessCtrl(int Num){
 
     CBaseVersionDlg *MainDlg = (CBaseVersionDlg *)AfxGetMainWnd();
-	MainDlg->ProcessCtrl(Num);
+	MainDlg->UIOperationCB(IDC_PROGRESS1,Num);
 }
 /*************************************************************************************/
 //œﬂ≥Ã≤‚ ‘
