@@ -9,7 +9,9 @@
 
 //FFMPEG ≈‰÷√
 #define CFG_SAVE_H264_PATH				"../Output/Temp.H264"
-
+#define CFG_SAVE_H264_PATH2				"../Output/Temp2.H264"
+#define CFG_RTSP_METHOD					"udp"
 //OPENCV ≈‰÷√
 #define CFG_OPENCV_RTSP_WIN				"RTSP¡˜"
+#define CFG_OPENCV_RTSP_WIN2				"RTSP2¡˜"
 #endif

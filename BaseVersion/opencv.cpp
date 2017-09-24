@@ -17,6 +17,11 @@ using namespace std;
 #include "CvvImage.h"
 #include <opencv2/opencv.hpp>
 
+static int g_ThreadCandy = 70;
+IplImage *g_pSrcImage;
+IplImage *g_pCannySrcImg;
+IplImage *g_pCannyImg;
+
 opencv::opencv()
 {
 
@@ -35,41 +40,69 @@ void opencv::Printf(CString Context)
 	MainDlg->Printf(Context);
 }
 
+DWORD WINAPI CandyThread(LPVOID pParam)
+{
+	cvCanny(g_pCannySrcImg, g_pCannyImg, g_ThreadCandy, g_ThreadCandy * 3, 3);  
+	cvShowImage("边缘检测窗口", g_pCannyImg);
+	return 0;
+}
+
 void opencv::opencv_showRGB(int width ,int height, unsigned char *rgbdata)
 {
-	IplImage *pImage = cvCreateImage(cvSize(width,height),IPL_DEPTH_8U ,3);
+	g_FrameCounter++;
 
-	memcpy(pImage->imageData,rgbdata,width*height*3);
+	if(g_FrameCounter == 1){		//第一帧数据来创建图像
+		g_pSrcImage = cvCreateImage(cvSize(width,height),IPL_DEPTH_8U ,3);
+		g_pCannySrcImg = cvCreateImage(cvGetSize(g_pSrcImage), IPL_DEPTH_8U, 3);  
+		g_pCannyImg = cvCreateImage(cvGetSize(g_pSrcImage), IPL_DEPTH_8U, 1);  
+	}
 
-	cvShowImage(CFG_OPENCV_RTSP_WIN,pImage);
+	memcpy(g_pSrcImage->imageData,rgbdata,width*height*3);
 
+	cvShowImage(CFG_OPENCV_RTSP_WIN,g_pSrcImage);
+#if 1
+	if(g_FrameCounter % 60 == 0){		//每60帧，更新一次Candy检测
+		memcpy(g_pCannySrcImg->imageData,rgbdata,width*height*3);
+		AfxBeginThread((AFX_THREADPROC)CandyThread,this,THREAD_PRIORITY_NORMAL);
+	}
+#endif
 	if(cvWaitKey(10)=='A'){
 		TRACE("Test");
 	}
-
-	cvReleaseImage(&pImage);
+	//cvReleaseImage(&g_pSrcImage);
 }
+
+void on_trackbar(int threshold)  
+{  
+   g_ThreadCandy = threshold;
+} 
 
 void opencv::opencv_init(void)
 {
 	this->Printf(CString("Opencv Init\r\n"));
-#if 0
-	using namespace cv; //下面的所有cv相关类型不用加上前缀了
-    Mat img = imread("../Input/opencvtest.jpg"); //声明Mat变量并调入lena小妞（老妞了现在？）的照片   
-    if(!img.data) //判断图片调入是否成功   
-        return ; //调入图片失败则退出    
-    namedWindow("loveLena", CV_WINDOW_AUTOSIZE); //创建窗口,并确定其为大小不可变类型窗口   
-    imshow("loveLena", img); //显示图片。如果你不介意窗口大小可变，可以直接注释掉上一句。因为imshow可以直接创建窗口   
-#else 
+
 	IplImage *pImage = cvLoadImage("../Input/opencvtest.jpg");
+	cvDestroyWindow(CFG_OPENCV_RTSP_WIN);
 	cvNamedWindow(CFG_OPENCV_RTSP_WIN,CV_WINDOW_AUTOSIZE);
 	cvShowImage(CFG_OPENCV_RTSP_WIN,pImage);
+
+	cvDestroyWindow("边缘检测窗口");
+	cvNamedWindow("边缘检测窗口",CV_WINDOW_AUTOSIZE);
+	cvShowImage("边缘检测窗口",pImage);
+
+	g_ThreadCandy = 75;
+	//int nThresholdEdge = 1;  
+    //cvCreateTrackbar("Candy阈值",CFG_OPENCV_RTSP_WIN, &nThresholdEdge, 100, on_trackbar);	//增加边缘检测阈值到窗体内，回调函数是on_trackbar
+	//on_trackbar(1); 
 	cvReleaseImage(&pImage);
-#endif
+
+	this->g_FrameCounter = 0;
+
     return ; 
 }
 
 void opencv::opencv_stop(void)
 {
 	cvDestroyWindow(CFG_OPENCV_RTSP_WIN);
+	cvDestroyWindow("边缘检测窗口");
 }

@@ -22,8 +22,7 @@ extern "C" {
 #include <libavutil/avutil.h> 
 #include <libswscale/swscale.h>
 }
-	
-opencv g_OpencvHdlr;
+
 /*************************************************************************************/
 //构造、析构函数
 ffmpeg::ffmpeg(){
@@ -122,10 +121,15 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 	TempCString.Format(_T("打开URL获取一个输入AVFormat\r\n"));
 	pffmpeg->Printf(TempCString);
 	/* 打开URL */
-    char RTSPUrl[] = "rtsp://192.168.0.103:8888/stream";
+    //char RTSPUrl[] = "rtsp://192.168.0.103:8888/stream";
 	//char RTSPUrl[] = "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov";
 	//if (avformat_open_input(&pAVFormatContext_Input, RTSPUrl, NULL, NULL)!=0)
-    if (avformat_open_input(&pAVFormatContext_Input, g_URLString, NULL, NULL)!=0)
+
+    AVDictionary* options = nullptr;   
+    av_dict_set(&options, "rtsp_transport", CFG_RTSP_METHOD, 0);  //以udp打开  
+    av_dict_set(&options, "stimeout", "10000000", 0);  //设置超时断开连接时间  
+
+    if (avformat_open_input(&pAVFormatContext_Input, g_URLString, NULL, &options)!=0)
     {
         pffmpeg->Printf((CString)("avformat_open_input failed\r\n"));
         return -1;
@@ -210,6 +214,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 		av_init_packet(&AVPackage_Input);
         if (av_read_frame(pAVFormatContext_Input, &AVPackage_Input) <0 ){	//读取一帧数据AVPackage
 			pffmpeg->Printf((CString)("av_read_frame获取帧失败\r\n"));
+			//pffmpeg->g_StartRecvRTSPFlag = 1;
 		}else{
 			H264File.Write(AVPackage_Input.data,AVPackage_Input.size);
 			avcodec_decode_video2(pAVCodecContext_Input, pFrameSrc, &frameFinished, &AVPackage_Input);  //解码一帧AVPackage_Input数据，放入到pFrameSrc,frameFinished=1表示解码成功
@@ -223,7 +228,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 					pffmpeg->SaveAsBMP(pFrameRGB, pAVCodecContext_Input->width, pAVCodecContext_Input->height, pffmpeg->g_FrameCounter, 24);  //将RGB24的数据写入BMP
 				}
 
-				g_OpencvHdlr.opencv_showRGB(pAVCodecContext_Input->width,pAVCodecContext_Input->height,pFrameRGB->data[0]);
+				pffmpeg->g_OpencvHdlr.opencv_showRGB(pAVCodecContext_Input->width,pAVCodecContext_Input->height,pFrameRGB->data[0]);
 				//TRACE(_T("Frame %lu\n"), pffmpeg->g_FrameCounter);
 			
 			}
@@ -239,6 +244,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 	pffmpeg->Printf((CString)("RecvRTSPThread线程结束\r\n"));
     return 0;
 }
+
 DWORD WINAPI UpdateUIThread(LPVOID pParam){
 	ffmpeg *pffmpeg = (ffmpeg*)pParam;
 	while(pffmpeg->g_StartRecvRTSPFlag){
@@ -250,30 +256,35 @@ DWORD WINAPI UpdateUIThread(LPVOID pParam){
 
 void ffmpeg::ffmpeg_start(CString URLCString)
 {
-
-	g_URLCString = URLCString;
-	g_StartRecvRTSPFlag = true;
-	AfxBeginThread((AFX_THREADPROC)RecvRTSPThread,this,THREAD_PRIORITY_HIGHEST);
-	AfxBeginThread((AFX_THREADPROC)UpdateUIThread,this,THREAD_PRIORITY_HIGHEST);
+	if(g_StartRecvRTSPFlag != true){
+		g_URLCString = URLCString;
+		g_StartRecvRTSPFlag = true;
+		AfxBeginThread((AFX_THREADPROC)RecvRTSPThread,this,THREAD_PRIORITY_HIGHEST);
+		AfxBeginThread((AFX_THREADPROC)UpdateUIThread,this,THREAD_PRIORITY_NORMAL);
+	}
 }
 void ffmpeg::ffmpeg_end(void)
 {
-	g_StartRecvRTSPFlag = false;
+	if(g_StartRecvRTSPFlag == true){
+		g_StartRecvRTSPFlag = false;
 
-	g_OpencvHdlr.opencv_stop();
+		g_OpencvHdlr.opencv_stop();
+	}
 }
 
 void ffmpeg::ffmpeg_init(void)
 {
-	this->Printf((CString)("avcodec_register_all\r\n"));
-	this->Printf((CString)("av_register_all\r\n"));
-	this->Printf((CString)("avformat_network_init\r\n"));
+	if(g_StartRecvRTSPFlag != true){
+		this->Printf((CString)("avcodec_register_all\r\n"));
+		this->Printf((CString)("av_register_all\r\n"));
+		this->Printf((CString)("avformat_network_init\r\n"));
 
-	avcodec_register_all();
-    av_register_all();
-    avformat_network_init();
+		avcodec_register_all();
+		av_register_all();
+		avformat_network_init();
 
-	g_OpencvHdlr.opencv_init();
+		g_OpencvHdlr.opencv_init();
+	}
 }
 
 

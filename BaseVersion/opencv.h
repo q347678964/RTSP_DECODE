@@ -5,6 +5,7 @@
 class opencv : public FormatChange{
 
 public:
+	unsigned int g_FrameCounter;
 
 public:
 	opencv();

@@ -1,0 +1,9 @@
+﻿Build started 2017/9/25 0:55:16.
+     1>Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" on node 2 (clean target(s)).
+     1>_PrepareForClean:
+         Deleting file "Release\BaseVersion.lastbuildstate".
+     1>Done Building Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" (clean target(s)).
+
+生成成功。
+
+Time Elapsed 00:00:00.03

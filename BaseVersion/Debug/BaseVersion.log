@@ -1,8 +1,39 @@
-﻿Build started 2017/9/24 13:52:58.
-     1>Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" on node 2 (clean target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets(74,5): warning : Access to the path 'F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.exe' is denied.
-     1>Done Building Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" (clean target(s)).
+﻿Build started 2017/9/24 22:27:29.
+     1>Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\BaseVersion.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2 /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include /IF:\project\FFMPEG\BaseVersion\FFMPEG\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\BaseVersion.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt opencv.cpp
+         opencv.cpp
+     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+       ResourceCompile:
+         All outputs are up-to-date.
+       ManifestResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.exe" /INCREMENTAL /NOLOGO /LIBPATH:F:\project\FFMPEG\BaseVersion\Opencvlib\build\x86\vc10\lib /LIBPATH:F:\project\FFMPEG\BaseVersion\FFMPEG\lib avcodec.lib avdevice.lib avfilter.lib avformat.lib avutil.lib postproc.lib swresample.lib swscale.lib opencv_core2410d.lib opencv_highgui2410d.lib opencv_video2410d.lib opencv_ml2410d.lib opencv_legacy2410d.lib opencv_imgproc2410d.lib /MANIFEST /ManifestFile:"Debug\BaseVersion.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.lib" /MACHINE:X86 Debug\BaseVersion.res
+         Debug\BaseVersion.exe.embed.manifest.res
+         Debug\BaseVersion.obj
+         Debug\BaseVersionDlg.obj
+         Debug\CvvImage.obj
+         Debug\Example.obj
+         Debug\ffmpeg.obj
+         Debug\FormatChange.obj
+         Debug\opencv.obj
+         Debug\stdafx.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\BaseVersion.exe.embed.manifest" /manifest Debug\BaseVersion.exe.intermediate.manifest "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+         All outputs are up-to-date.
+       LinkEmbedManifest:
+         All outputs are up-to-date.
+         BaseVersion.vcxproj -> F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\BaseVersion.unsuccessfulbuild".
+         Touching "Debug\BaseVersion.lastbuildstate".
+     1>Done Building Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" (build target(s)).
 
 生成成功。
 
-Time Elapsed 00:00:00.00
+Time Elapsed 00:00:02.12
