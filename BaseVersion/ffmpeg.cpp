@@ -22,7 +22,8 @@ extern "C" {
 #include <libavutil/avutil.h> 
 #include <libswscale/swscale.h>
 }
-
+	
+opencv g_OpencvHdlr;
 /*************************************************************************************/
 //构造、析构函数
 ffmpeg::ffmpeg(){
@@ -218,9 +219,11 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 				sws_scale(img_convert_ctx, (const uint8_t* const*)pFrameSrc->data, pFrameSrc->linesize, 0, pAVCodecContext_Input->height, 
 				pFrameRGB->data, pFrameRGB->linesize);//根据img_convert_ctx句柄参数，进行帧的缩放，从YUV420帧生成RGB24格式的帧
 
-				if(pffmpeg->g_FrameCounter>100&&pffmpeg->g_FrameCounter<120)
+				if(pffmpeg->g_FrameCounter%1800 == 0){
 					pffmpeg->SaveAsBMP(pFrameRGB, pAVCodecContext_Input->width, pAVCodecContext_Input->height, pffmpeg->g_FrameCounter, 24);  //将RGB24的数据写入BMP
+				}
 
+				g_OpencvHdlr.opencv_showRGB(pAVCodecContext_Input->width,pAVCodecContext_Input->height,pFrameRGB->data[0]);
 				//TRACE(_T("Frame %lu\n"), pffmpeg->g_FrameCounter);
 			
 			}
@@ -256,6 +259,8 @@ void ffmpeg::ffmpeg_start(CString URLCString)
 void ffmpeg::ffmpeg_end(void)
 {
 	g_StartRecvRTSPFlag = false;
+
+	g_OpencvHdlr.opencv_stop();
 }
 
 void ffmpeg::ffmpeg_init(void)
@@ -268,8 +273,7 @@ void ffmpeg::ffmpeg_init(void)
     av_register_all();
     avformat_network_init();
 
-	opencv opecvHdlr;
-	opecvHdlr.opencv_init();
+	g_OpencvHdlr.opencv_init();
 }
 
 

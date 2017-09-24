@@ -1,7 +1,7 @@
 #ifndef FFMPEG_H
 #define FFMPEG_H
 #include "FormatChange.h"
-#include "cv.h"
+#include "opencv.h"
 
 extern "C"{
 #include "libavutil/frame.h"
