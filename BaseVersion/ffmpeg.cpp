@@ -9,6 +9,8 @@
 #include <string.h>
 #include "Config.h"
 
+#include "opencv.h"
+
 #include <iostream>
 using namespace std;
 
@@ -255,6 +257,7 @@ void ffmpeg::ffmpeg_end(void)
 {
 	g_StartRecvRTSPFlag = false;
 }
+
 void ffmpeg::ffmpeg_init(void)
 {
 	this->Printf((CString)("avcodec_register_all\r\n"));
@@ -265,5 +268,9 @@ void ffmpeg::ffmpeg_init(void)
     av_register_all();
     avformat_network_init();
 
-
+	opencv opecvHdlr;
+	opecvHdlr.opencv_init();
 }
+
+
+
