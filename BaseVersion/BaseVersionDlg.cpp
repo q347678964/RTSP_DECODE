@@ -14,7 +14,7 @@
 #define new DEBUG_NEW
 #endif
 
-
+ffmpeg FFMPEGHdlr;
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialogEx
@@ -153,8 +153,11 @@ void CBaseVersionDlg::DlgPaintInit(void)
 		ScreenToClient(RectTemp);
 
 		pWnd[3] = GetDlgItem(IDC_BUTTON_Test);
-		pWnd[3]->SetWindowPos( NULL,RectTemp.right+10,10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//测试按钮，只改变坐标，不改变大小
+		pWnd[3]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//测试按钮，只改变坐标，不改变大小
 		((CButton *)GetDlgItem(IDC_BUTTON_Test))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
+		//等效于这三句AfxGetApp()->LoadIcon(IDI_ICON1) 加载icon
+		//((CMFCButton *)GetDlgItem(IDC_BUTTON_OpenFile)) 获取按钮句柄
+		//SetIcon 按钮操作函数
 
 		pWnd[1]->GetWindowRect(RectTemp);//进度条放在路径窗口下面
 		ScreenToClient(RectTemp);
@@ -164,9 +167,17 @@ void CBaseVersionDlg::DlgPaintInit(void)
 		((CProgressCtrl *)GetDlgItem(IDC_PROGRESS1))->SetStep(1);//进度条步进1
 		((CProgressCtrl *)GetDlgItem(IDC_PROGRESS1))->SetPos(0);//当前进度0
 
-		//等效于这三句AfxGetApp()->LoadIcon(IDI_ICON1) 加载icon
-		//((CMFCButton *)GetDlgItem(IDC_BUTTON_OpenFile)) 获取按钮句柄
-		//SetIcon 按钮操作函数
+		pWnd[3]->GetWindowRect(RectTemp);//RTSP开始按钮放到进度条下面
+		ScreenToClient(RectTemp);
+		pWnd[3] = GetDlgItem(IDC_BUTTON_RTSPStart);
+		pWnd[3]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP开始按钮，只改变坐标，不改变大小
+		((CButton *)GetDlgItem(IDC_BUTTON_RTSPStart))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
+
+		pWnd[3]->GetWindowRect(RectTemp);//RTSP结束按钮放到开始下面
+		ScreenToClient(RectTemp);
+		pWnd[4] = GetDlgItem(IDC_BUTTON_RTSPEnd);
+		pWnd[4]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP结束按钮，只改变坐标，不改变大小
+		((CButton *)GetDlgItem(IDC_BUTTON_RTSPEnd))->SetIcon(AfxGetApp()->LoadIcon(IDI_ICON1)); 
 
 		//mImage.Draw(GetDC()->GetSafeHdc(),CRect(0,0,WinDlgWidth,WinDlgHeight));//背景，不能用这种方法绘制，会闪烁
 
@@ -327,7 +338,6 @@ void CBaseVersionDlg::OnBnClickedButtonTest()
 
 void CBaseVersionDlg::OnBnClickedButtonRtspstart()
 {
-	ffmpeg FFMPEGHdlr;
 	FFMPEGHdlr.ffmpeg_init();
 	FFMPEGHdlr.ffmpeg_start();
 }
@@ -335,7 +345,5 @@ void CBaseVersionDlg::OnBnClickedButtonRtspstart()
 
 void CBaseVersionDlg::OnBnClickedButtonRtspend()
 {
-	
-ffmpeg FFMPEGHdlr;
 	FFMPEGHdlr.ffmpeg_end();
 }

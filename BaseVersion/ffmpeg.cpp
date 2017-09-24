@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Config.h"
 
 #include <iostream>
 using namespace std;
@@ -23,13 +24,13 @@ extern "C" {
 /*************************************************************************************/
 //构造、析构函数
 ffmpeg::ffmpeg(){
-	this->Printf((CString)"***********************\r\n");
+	this->g_FrameCounter = 0;
+	g_StartRecvRTSPFlag = 0;
 }
 
 ffmpeg::~ffmpeg(){
 
 }
-int decode_video_example(int argc, char **argv);
 /*************************************************************************************/
 //主窗体操作
 void ffmpeg::Printf(CString Context){
@@ -40,13 +41,8 @@ void ffmpeg::Printf(CString Context){
     CBaseVersionDlg *MainDlg = (CBaseVersionDlg *)AfxGetMainWnd();
 	MainDlg->Printf(Context);
 }
-
-
-
-static bool bStop = false;
-static int FrameCounter = 0;
-//保存BMP文件的函数  
-void SaveAsBMP(AVFrame *pFrameRGB, int width, int height, int index, int bpp)  
+//保存RGB24到BMP文件的函数  
+void ffmpeg::SaveAsBMP(AVFrame *pFrameRGB, int width, int height, int index, int bpp)  
 {  
     char buf[5] = {0};  
     BITMAPFILEHEADER bmpheader;  
@@ -70,7 +66,7 @@ void SaveAsBMP(AVFrame *pFrameRGB, int width, int height, int index, int bpp)
   
     bmpinfo.biSize = sizeof(BITMAPINFOHEADER);  
     bmpinfo.biWidth = width;  
-    bmpinfo.biHeight = height;  
+    bmpinfo.biHeight = -height;  //不然图像会翻转
     bmpinfo.biPlanes = 1;  
     bmpinfo.biBitCount = bpp;  
     bmpinfo.biCompression = BI_RGB;  
@@ -88,7 +84,7 @@ void SaveAsBMP(AVFrame *pFrameRGB, int width, int height, int index, int bpp)
 }  
 
 
-DWORD WINAPI rtsp2mp4(LPVOID pParam)
+DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 {
 	CString TempCString;
 	ffmpeg *pffmpeg = (ffmpeg*)(pParam);
@@ -99,19 +95,16 @@ DWORD WINAPI rtsp2mp4(LPVOID pParam)
 	int VideoWidth = 0;
 	int VideoHeight = 0;
 
-    avcodec_register_all();
-    av_register_all();
-    avformat_network_init();
-	FrameCounter = 0;
+	pffmpeg->g_FrameCounter = 0;
     /* should set to NULL so that avformat_open_input() allocate a new one */
     pAVFormatContext_Input = NULL;
 	pffmpeg->Printf((CString)("设置URL为rtsp://192.168.0.103:8888/stream\r\n"));
-	pffmpeg->Printf((CString)("设置保存文件到Output/1.H264\r\n"));
-    //char RTSPUrl[] = "rtsp://192.168.0.103:8888/stream";
-	char RTSPUrl[] = "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov";
-	CFile H264File(_T("../Output/2.H264"),CFile::modeCreate | CFile::modeReadWrite);
+	pffmpeg->Printf((CString)("设置保存文件到Output/Temp.H264\r\n"));
+    char RTSPUrl[] = "rtsp://192.168.0.103:8888/stream";
+	//char RTSPUrl[] = "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov";
+	CFile H264File(_T(CFG_SAVE_H264_PATH),CFile::modeCreate | CFile::modeReadWrite);
 
-	TempCString.Format(_T("打开URL获取一个输入AVFormatContextr\n"));
+	TempCString.Format(_T("打开URL获取一个输入AVFormat\r\n"));
 	pffmpeg->Printf(TempCString);
 	/* 打开URL */
     if (avformat_open_input(&pAVFormatContext_Input, RTSPUrl, NULL, NULL)!=0)
@@ -126,7 +119,7 @@ DWORD WINAPI rtsp2mp4(LPVOID pParam)
         return -1;
     }
 	/* 找到视频流 */
-	TempCString.Format(_T("码流数量 = %d\r\n"),pAVFormatContext_Input->nb_streams);
+	TempCString.Format(_T("码流AVStream数量 = %d\r\n"),pAVFormatContext_Input->nb_streams);
 	pffmpeg->Printf(TempCString);
     for (unsigned i=0; i<pAVFormatContext_Input->nb_streams; i++)
     {
@@ -138,7 +131,7 @@ DWORD WINAPI rtsp2mp4(LPVOID pParam)
     {
         if (pAVFormatContext_Input->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
         {
-			TempCString.Format(_T("找到视频流 = (%d)\r\n"),i);
+			TempCString.Format(_T("找到视频流VStream = (%d)\r\n"),i);
 			pffmpeg->Printf(TempCString);
             pAVStream_InputVideo = pAVFormatContext_Input->streams[i];
             break;
@@ -154,7 +147,7 @@ DWORD WINAPI rtsp2mp4(LPVOID pParam)
 		TempCString.Format(_T("编码器ID:%d,编码器类型:%d\r\n"),pAVStream_InputVideo->codec->codec_id,pAVStream_InputVideo->codec->codec_type);
 		pffmpeg->Printf(TempCString);
 
-		TempCString.Format(_T("time_base.num:%d,time_base.den:%d\r\n"),pAVStream_InputVideo->time_base.num,pAVStream_InputVideo->time_base.den);
+		TempCString.Format(_T("时钟基准.num:%d,时钟基准.den:%d\r\n"),pAVStream_InputVideo->time_base.num,pAVStream_InputVideo->time_base.den);
 		pffmpeg->Printf(TempCString);
 
 		VideoWidth = pAVStream_InputVideo->codec->width;
@@ -165,48 +158,49 @@ DWORD WINAPI rtsp2mp4(LPVOID pParam)
 		TempCString.Format(_T("像素格式:%d\r\n"),pAVStream_InputVideo->codec->pix_fmt);
 		pffmpeg->Printf(TempCString);
     }
+	pffmpeg->Printf((CString)("获取流对应的编码器AVCodec\r\n"));
 	pAVCodecContext_Input = pAVStream_InputVideo->codec;
 	/* 通过Stream找到解码器 */
-	pffmpeg->Printf((CString)("查找码流对应的解码器\r\n"));
+
 	AVCodec *pAVCodec;
     pAVCodec = avcodec_find_decoder(pAVCodecContext_Input->codec_id);	//AV_CODEC_ID_H264
-	pffmpeg->Printf((CString)("打开解码器\r\n"));
-	avcodec_open2(pAVCodecContext_Input,pAVCodec,NULL);
+	pffmpeg->Printf((CString)("找到VStream对应的解码器AV_CODEC_ID_H264\r\n"));
+	avcodec_open2(pAVCodecContext_Input,pAVCodec,NULL);//链接H264编码器类型相同的解码器
 
-	AVFrame *pFrame_ = av_frame_alloc();// Allocate video frame  
-	AVFrame *pFrameRGB = av_frame_alloc();
-	uint8_t *out_buffer = (uint8_t *)av_malloc(avpicture_get_size(AV_PIX_FMT_BGR24, pAVCodecContext_Input->width, pAVCodecContext_Input->height));
+	AVFrame *pFrameSrc = av_frame_alloc();//原始解码帧数据YUV420
+	AVFrame *pFrameRGB = av_frame_alloc();;//转换帧数据RGB24
+	uint8_t *out_buffer = (uint8_t *)av_malloc(avpicture_get_size(AV_PIX_FMT_BGR24, pAVCodecContext_Input->width, pAVCodecContext_Input->height));//创建RGB24Buffer
     if( out_buffer == NULL ) {  
-        TRACE("av malloc failed!\n");  
+        pffmpeg->Printf((CString)("av_malloc失败\r\n"));
         exit(1);  
     }  
-	avpicture_fill((AVPicture *)pFrameRGB, out_buffer, AV_PIX_FMT_BGR24, pAVCodecContext_Input->width, pAVCodecContext_Input->height);
+	avpicture_fill((AVPicture *)pFrameRGB, out_buffer, AV_PIX_FMT_BGR24, pAVCodecContext_Input->width, pAVCodecContext_Input->height);//指定该Buffer给pFrameRGB使用
 
 	struct SwsContext *img_convert_ctx = sws_getContext(pAVCodecContext_Input->width, pAVCodecContext_Input->height, pAVCodecContext_Input->pix_fmt, 
         pAVCodecContext_Input->width, pAVCodecContext_Input->height, AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL); 
-
+	//创建图像转换参数，H264解码之后是YUV420,这里我们需要转成RGB24的格式
 	int frameFinished;
-
-    AVPacket i_pkt;
+    AVPacket AVPackage_Input;	//数据最初开始是AVPackage的格式，里面存放H264
     
-    while (!bStop)
+    while (!pffmpeg->g_StartRecvRTSPFlag)
     {
 
-		av_init_packet(&i_pkt);
-        if (av_read_frame(pAVFormatContext_Input, &i_pkt) <0 ){
-			pffmpeg->Printf((CString)("av_read_frame failed\r\n"));
-			break;
+		av_init_packet(&AVPackage_Input);
+        if (av_read_frame(pAVFormatContext_Input, &AVPackage_Input) <0 ){	//读取一帧数据AVPackage
+			pffmpeg->Printf((CString)("av_read_frame获取帧失败\r\n"));
 		}else{
-			H264File.Write(i_pkt.data,i_pkt.size);
-			avcodec_decode_video2(pAVCodecContext_Input, pFrame_, &frameFinished, &i_pkt);  
+			H264File.Write(AVPackage_Input.data,AVPackage_Input.size);
+			avcodec_decode_video2(pAVCodecContext_Input, pFrameSrc, &frameFinished, &AVPackage_Input);  //解码一帧AVPackage_Input数据，放入到pFrameSrc,frameFinished=1表示解码成功
 			if(frameFinished){
-				sws_scale(img_convert_ctx, (const uint8_t* const*)pFrame_->data, pFrame_->linesize, 0, pAVCodecContext_Input->height, 
-				pFrameRGB->data, pFrameRGB->linesize);
+				pffmpeg->g_FrameCounter++;
 
-				if(FrameCounter>100&&FrameCounter<120)
-					SaveAsBMP(pFrameRGB, pAVCodecContext_Input->width, pAVCodecContext_Input->height, FrameCounter, 24);  
+				sws_scale(img_convert_ctx, (const uint8_t* const*)pFrameSrc->data, pFrameSrc->linesize, 0, pAVCodecContext_Input->height, 
+				pFrameRGB->data, pFrameRGB->linesize);//根据img_convert_ctx句柄参数，进行帧的缩放，从YUV420帧生成RGB24格式的帧
 
-				TRACE(_T("Frame %d\n"), FrameCounter++);
+				if(pffmpeg->g_FrameCounter>100&&pffmpeg->g_FrameCounter<120)
+					pffmpeg->SaveAsBMP(pFrameRGB, pAVCodecContext_Input->width, pAVCodecContext_Input->height, pffmpeg->g_FrameCounter, 24);  //将RGB24的数据写入BMP
+
+				TRACE(_T("Frame %lu\n"), pffmpeg->g_FrameCounter);
 			
 			}
 			
@@ -214,27 +208,32 @@ DWORD WINAPI rtsp2mp4(LPVOID pParam)
     }
 
 	H264File.Close();
-	av_free_packet(&i_pkt);
-    avformat_close_input(&pAVFormatContext_Input);
-	pffmpeg->Printf((CString)("关闭输入流内容AVFormatContext\r\n"));
+	av_free_packet(&AVPackage_Input);//释放AVPackage
+    avformat_close_input(&pAVFormatContext_Input);//关闭输入AVFormat
+	pffmpeg->Printf((CString)("释放AVPackage,关闭AVFormat\r\n"));
 
-	pffmpeg->Printf((CString)("rtsp2mp4线程结束\r\n"));
+	pffmpeg->Printf((CString)("RecvRTSPThread线程结束\r\n"));
     return 0;
 }
 
 void ffmpeg::ffmpeg_end(void)
 {
-	bStop = true;
+	g_StartRecvRTSPFlag = true;
 }
 void ffmpeg::ffmpeg_start(void)
 {
-
+	g_StartRecvRTSPFlag = false;
+	AfxBeginThread((AFX_THREADPROC)RecvRTSPThread,this,THREAD_PRIORITY_HIGHEST);
 }
 void ffmpeg::ffmpeg_init(void)
 {
-	this->Printf((CString)("ffmpeg_init\r\n"));
+	this->Printf((CString)("avcodec_register_all\r\n"));
+	this->Printf((CString)("av_register_all\r\n"));
+	this->Printf((CString)("avformat_network_init\r\n"));
 
-    bStop = false;
+	avcodec_register_all();
+    av_register_all();
+    avformat_network_init();
 
-	AfxBeginThread((AFX_THREADPROC)rtsp2mp4,this,THREAD_PRIORITY_HIGHEST);
+
 }
