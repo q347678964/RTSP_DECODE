@@ -51,6 +51,20 @@ void ffmpeg::UpdateFrameInfo(unsigned int Num)
     CBaseVersionDlg *MainDlg = (CBaseVersionDlg *)AfxGetMainWnd();
 	MainDlg->UIOperationCB(IDC_EDIT_FrameShow,TempCString);
 }
+
+void ffmpeg::UpdateTimeInfo(unsigned int Num)
+{
+	CString TempCString;
+	TempCString.Format(_T("%03d:%02d:%02d"),Num/3600,Num%3600/60,Num%60);
+    CBaseVersionDlg *MainDlg = (CBaseVersionDlg *)AfxGetMainWnd();
+	MainDlg->UIOperationCB(IDC_EDIT_TimeShow,TempCString);
+}
+
+void ffmpeg::UpdateTimerStatus(bool Status)
+{
+	CBaseVersionDlg *MainDlg = (CBaseVersionDlg *)AfxGetMainWnd();
+	MainDlg->UIOperationCB(0x8001,(int)Status);
+}
 //保存RGB24到BMP文件的函数  
 void ffmpeg::SaveAsBMP(AVFrame *pFrameRGB, int width, int height, int index, int bpp)  
 {  
@@ -101,7 +115,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 
 	AVFormatContext *pAVFormatContext_Input;
 	AVCodecContext *pAVCodecContext_Input;
-	AVStream *pAVStream_InputVideo;
+	AVStream *pAVStream_InputVideo = NULL;
 	int VideoWidth = 0;
 	int VideoHeight = 0;
 
@@ -132,6 +146,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
     if (avformat_open_input(&pAVFormatContext_Input, g_URLString, NULL, &options)!=0)
     {
         pffmpeg->Printf((CString)("avformat_open_input failed\r\n"));
+		pffmpeg->g_LoseFrameCounter = CFG_LOSE_FRAME_RESTART;
         return -1;
     }
 	/* 找到流信息 */
@@ -213,21 +228,22 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 
 		av_init_packet(&AVPackage_Input);
         if (av_read_frame(pAVFormatContext_Input, &AVPackage_Input) <0 ){	//读取一帧数据AVPackage
-			pffmpeg->Printf((CString)("av_read_frame获取帧失败\r\n"));
-			//pffmpeg->g_StartRecvRTSPFlag = 1;
+			pffmpeg->g_LoseFrameCounter++;
 		}else{
+#if CFG_FFMPEG_SAVE_FILE
 			H264File.Write(AVPackage_Input.data,AVPackage_Input.size);
+#endif
 			avcodec_decode_video2(pAVCodecContext_Input, pFrameSrc, &frameFinished, &AVPackage_Input);  //解码一帧AVPackage_Input数据，放入到pFrameSrc,frameFinished=1表示解码成功
 			if(frameFinished){
 				pffmpeg->g_FrameCounter++;
 
 				sws_scale(img_convert_ctx, (const uint8_t* const*)pFrameSrc->data, pFrameSrc->linesize, 0, pAVCodecContext_Input->height, 
 				pFrameRGB->data, pFrameRGB->linesize);//根据img_convert_ctx句柄参数，进行帧的缩放，从YUV420帧生成RGB24格式的帧
-
+#if CFG_FFMPEG_SAVE_FILE
 				if(pffmpeg->g_FrameCounter%1800 == 0){
 					pffmpeg->SaveAsBMP(pFrameRGB, pAVCodecContext_Input->width, pAVCodecContext_Input->height, pffmpeg->g_FrameCounter, 24);  //将RGB24的数据写入BMP
 				}
-
+#endif
 				pffmpeg->g_OpencvHdlr.opencv_showRGB(pAVCodecContext_Input->width,pAVCodecContext_Input->height,pFrameRGB->data[0]);
 				//TRACE(_T("Frame %lu\n"), pffmpeg->g_FrameCounter);
 			
@@ -236,12 +252,14 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 		}
     }
 
+	av_free(out_buffer);
 	H264File.Close();
 	av_free_packet(&AVPackage_Input);//释放AVPackage
     avformat_close_input(&pAVFormatContext_Input);//关闭输入AVFormat
 	pffmpeg->Printf((CString)("释放AVPackage,关闭AVFormat\r\n"));
 
 	pffmpeg->Printf((CString)("RecvRTSPThread线程结束\r\n"));
+
     return 0;
 }
 
@@ -254,18 +272,42 @@ DWORD WINAPI UpdateUIThread(LPVOID pParam){
 	return 0;
 }
 
+DWORD WINAPI LoseFrameCheckThread(LPVOID pParam){
+	ffmpeg *pffmpeg = (ffmpeg*)pParam;
+	unsigned int SecondCounter = 0;
+	while(pffmpeg->g_StartRecvRTSPFlag){
+		if(pffmpeg->g_LoseFrameCounter>=CFG_LOSE_FRAME_RESTART){
+			pffmpeg->ffmpeg_end();
+			Sleep(3000);
+			pffmpeg->ffmpeg_start(pffmpeg->g_URLCString);
+			return 0;
+		}
+		Sleep(1000);
+		pffmpeg->UpdateTimeInfo(SecondCounter++);
+		pffmpeg->UpdateTimerStatus(SecondCounter%2);
+	}
+	return 0;
+}
 void ffmpeg::ffmpeg_start(CString URLCString)
 {
-	if(g_StartRecvRTSPFlag != true){
-		g_URLCString = URLCString;
+	if(g_StartRecvRTSPFlag == false){
 		g_StartRecvRTSPFlag = true;
+
+		g_URLCString = URLCString;
+		g_LoseFrameCounter = 0;
+		g_FrameCounter = 0;
+
+		g_OpencvHdlr.opencv_init();
+
 		AfxBeginThread((AFX_THREADPROC)RecvRTSPThread,this,THREAD_PRIORITY_HIGHEST);
 		AfxBeginThread((AFX_THREADPROC)UpdateUIThread,this,THREAD_PRIORITY_NORMAL);
+		AfxBeginThread((AFX_THREADPROC)LoseFrameCheckThread,this,THREAD_PRIORITY_NORMAL);
 	}
 }
 void ffmpeg::ffmpeg_end(void)
 {
 	if(g_StartRecvRTSPFlag == true){
+
 		g_StartRecvRTSPFlag = false;
 
 		g_OpencvHdlr.opencv_stop();
@@ -282,8 +324,6 @@ void ffmpeg::ffmpeg_init(void)
 		avcodec_register_all();
 		av_register_all();
 		avformat_network_init();
-
-		g_OpencvHdlr.opencv_init();
 	}
 }
 

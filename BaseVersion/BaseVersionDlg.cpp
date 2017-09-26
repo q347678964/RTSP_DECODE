@@ -129,6 +129,8 @@ void CBaseVersionDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
+CRect RecTimerPosition;
+
 void CBaseVersionDlg::DlgPaintInit(void)
 {
 	CImage mImage;  
@@ -190,8 +192,26 @@ void CBaseVersionDlg::DlgPaintInit(void)
 		pWnd[5]->GetWindowRect(RectTemp);//帧计数窗口放在开始按钮右边
 		ScreenToClient(RectTemp);
 		pWnd[7] = GetDlgItem(IDC_EDIT_FrameShow);
-		pWnd[7]->SetWindowPos( NULL,RectTemp.right+10,RectTemp.top,0,0,SWP_NOZORDER|SWP_NOSIZE);	//RTSP结束按钮，只改变坐标，不改变大小
+		pWnd[7]->SetWindowPos( NULL,RectTemp.right+10,RectTemp.top,0,0,SWP_NOZORDER|SWP_NOSIZE);	//帧计数窗口，只改变坐标，不改变大小
+		
+		pWnd[7]->GetWindowRect(RectTemp);//拍照张数显示窗口放在帧计数窗口下面
+		ScreenToClient(RectTemp);		//拍照张数显示窗口
+		pWnd[8] = GetDlgItem(IDC_EDIT_JPGShow);
+		pWnd[8]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//拍照张数，只改变坐标，不改变大小
+		
 
+		pWnd[8]->GetWindowRect(RectTemp);//当前黑色像素点个数显示窗口放在拍照张数下面
+		ScreenToClient(RectTemp);		//当前黑色像素点个数显示窗口
+		pWnd[9] = GetDlgItem(IDC_EDIT_BlackPixelShow);
+		pWnd[9]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	//当前黑色像素点个数窗口，只改变坐标，不改变大小
+
+		pWnd[9]->GetWindowRect(RectTemp);//时间显示放到黑色像素下面
+		ScreenToClient(RectTemp);		
+		pWnd[10] = GetDlgItem(IDC_EDIT_TimeShow);
+		pWnd[10]->SetWindowPos( NULL,RectTemp.left,RectTemp.bottom+10,0,0,SWP_NOZORDER|SWP_NOSIZE);	
+		pWnd[10]->GetWindowRect(RectTemp);//时间显示放到黑色像素下面
+		ScreenToClient(RectTemp);	
+		RecTimerPosition = RectTemp;
 		//mImage.Draw(GetDC()->GetSafeHdc(),CRect(0,0,WinDlgWidth,WinDlgHeight));//背景，不能用这种方法绘制，会闪烁
 
 		{	//背景绘制
@@ -308,7 +328,20 @@ void CBaseVersionDlg::UIOperationCB(int ControlID,int Num)
 	switch(ControlID){
 		case IDC_PROGRESS1:
 			((CProgressCtrl *)GetDlgItem(IDC_PROGRESS1))->SetPos(Num);//进度条数值范围0~100
-		break;
+			break;
+		case 0x8001:
+			if(Num == 0){
+				CDC *pDC =GetDC();
+				CBrush brush(RGB(0,255,0));//Green
+				pDC->SelectObject(&brush);
+				pDC->Ellipse(RecTimerPosition.left-30,RecTimerPosition.top,RecTimerPosition.left-10,RecTimerPosition.bottom);
+			}else{
+				CDC *pDC =GetDC();
+				CBrush brush(RGB(255,0,0));//Red
+				pDC->SelectObject(&brush);
+				pDC->Ellipse(RecTimerPosition.left-30,RecTimerPosition.top,RecTimerPosition.left-10,RecTimerPosition.bottom);
+			}
+			break;
 	}
 }
 
@@ -317,7 +350,16 @@ void CBaseVersionDlg::UIOperationCB(int ControlID,CString CStringData)
 	switch(ControlID){
 		case IDC_EDIT_FrameShow:
 			SetDlgItemText(IDC_EDIT_FrameShow,CStringData);
-		break;
+			break;
+		case IDC_EDIT_JPGShow:
+			SetDlgItemText(IDC_EDIT_JPGShow,CStringData);	
+			break;
+		case IDC_EDIT_BlackPixelShow:
+			SetDlgItemText(IDC_EDIT_BlackPixelShow,CStringData);	
+			break;
+		case IDC_EDIT_TimeShow:
+			SetDlgItemText(IDC_EDIT_TimeShow,CStringData);
+			break;
 	}
 }
 

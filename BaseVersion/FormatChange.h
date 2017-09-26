@@ -10,6 +10,10 @@ public:
 	void CImage2CBitmap(CImage &Image,CBitmap &Bitmap);
 	void FormatChange::CBitmap2Hbitmap(CBitmap &Bitmap,HBITMAP &Hbitmap);
 	void FormatChange::Hbitmap2CBitmap(HBITMAP &Hbitmap,CBitmap &Bitmap);
-	void FormatChange::CString2CharArr(CString CStringData,char **CharData);
+	wchar_t* FormatChange::AnsiToUnicode( const char* szStr );
+	char* FormatChange::UnicodeToAnsi( const wchar_t* szStr );
+	char* FormatChange::CStringToChar(CString cstring );
+
+	CString FormatChange::GetTimeCString(void);
 };
 #endif

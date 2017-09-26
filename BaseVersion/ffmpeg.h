@@ -10,6 +10,7 @@ class ffmpeg : public FormatChange{
 
 public:
 	unsigned long g_FrameCounter;
+	unsigned long g_LoseFrameCounter;
 	bool g_StartRecvRTSPFlag;
 	CString g_URLCString;
 	
@@ -19,6 +20,8 @@ public:
 	ffmpeg();
 	~ffmpeg();
 	//UI
+	void ffmpeg::UpdateTimeInfo(unsigned int TimeSeconds);
+	void ffmpeg::UpdateTimerStatus(bool Status);
 	void ffmpeg::UpdateFrameInfo(unsigned int Num);
 	void ffmpeg::Printf(CString Context);
 	//
