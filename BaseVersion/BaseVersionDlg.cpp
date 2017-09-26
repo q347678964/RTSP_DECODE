@@ -110,7 +110,7 @@ BOOL CBaseVersionDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 	// TODO: 在此添加额外的初始化代码
 
-	SetDlgItemText(IDC_EDIT_URL,(CString)"rtsp://192.168.0.104:8554/live.sdp");
+	SetDlgItemText(IDC_EDIT_URL,(CString)URL);
 	this->Printf((CString)("[Dialog]初始化窗体完成!\r\n"));
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE

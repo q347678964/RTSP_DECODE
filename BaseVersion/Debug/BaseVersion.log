@@ -1,68 +1,22 @@
-﻿Build started 2017/9/26 1:34:40.
+﻿Build started 2017/9/26 23:19:55.
      1>Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\BaseVersion.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          All outputs are up-to-date.
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2 /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include /IF:\project\FFMPEG\BaseVersion\FFMPEG\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\BaseVersion.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt BaseVersionDlg.cpp ffmpeg.cpp opencv.cpp
-         BaseVersionDlg.cpp
-     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-         正在生成代码...
-         正在编译...
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2 /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include /IF:\project\FFMPEG\BaseVersion\FFMPEG\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\BaseVersion.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt BaseVersionDlg.cpp OpencvMotionDetection.cpp OpencvSelf.cpp ffmpeg.cpp opencv.cpp
          opencv.cpp
      1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
-         ffmpeg.cpp
-     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(80): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(163): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(169): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(184): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(184): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(189): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(189): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(191): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(194): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(195): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(196): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(196): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(199): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(203): warning C4996: 'AVStream::codec': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavformat\avformat.h(893) : 参见“AVStream::codec”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(213): warning C4996: 'avpicture_get_size': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(5561) : 参见“avpicture_get_size”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(218): warning C4996: 'avpicture_fill': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(5546) : 参见“avpicture_fill”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(236): warning C4996: 'avcodec_decode_video2': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(4901) : 参见“avcodec_decode_video2”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(257): warning C4996: 'av_free_packet': 被声明为已否决
-                 f:\project\ffmpeg\baseversion\ffmpeg\include\libavcodec\avcodec.h(4558) : 参见“av_free_packet”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\ffmpeg.cpp(287): warning C4800: “unsigned int”: 将值强制为布尔值“true”或“false”(性能警告)
+     1>f:\project\ffmpeg\baseversion\baseversion\opencvmotiondetection.h(15): warning C4584: “OpencvMotionDetection”: 基类“FormatChange”已是“opencvself”的基类
+                 f:\project\ffmpeg\baseversion\baseversion\formatchange.h(5) : 参见“FormatChange”的声明
+                 f:\project\ffmpeg\baseversion\baseversion\opencvself.h(9) : 参见“opencvself”的声明
          正在生成代码...
+         正在跳过...(未检测到相关更改)
+         ffmpeg.cpp
+         OpencvSelf.cpp
+         OpencvMotionDetection.cpp
+         BaseVersionDlg.cpp
        ResourceCompile:
          All outputs are up-to-date.
        ManifestResourceCompile:
@@ -77,6 +31,7 @@
          Debug\ffmpeg.obj
          Debug\FormatChange.obj
          Debug\opencv.obj
+         Debug\OpencvMotionDetection.obj
          Debug\OpencvSelf.obj
          Debug\stdafx.obj
        Manifest:
@@ -92,4 +47,4 @@
 
 生成成功。
 
-Time Elapsed 00:00:04.56
+Time Elapsed 00:00:02.35

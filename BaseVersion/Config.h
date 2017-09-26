@@ -6,7 +6,7 @@
 #define EDIT_PRINT_BG_RGB				RGB(172,252,150)
 #define EDIT_PRINT_TEXT_RGB				RGB(89,89,255)
 
-
+#define URL "rtsp://192.168.0.103:8554/live.sdp"
 //FFMPEG ≈‰÷√
 #define CFG_FFMPEG_SAVE_FILE			0
 #define CFG_SAVE_H264_PATH				"../Output/Temp.H264"

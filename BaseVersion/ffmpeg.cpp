@@ -244,7 +244,7 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 					pffmpeg->SaveAsBMP(pFrameRGB, pAVCodecContext_Input->width, pAVCodecContext_Input->height, pffmpeg->g_FrameCounter, 24);  //将RGB24的数据写入BMP
 				}
 #endif
-				pffmpeg->g_OpencvHdlr.opencv_showRGB(pAVCodecContext_Input->width,pAVCodecContext_Input->height,pFrameRGB->data[0]);
+				pffmpeg->g_OpencvHdlr.HandleImage(pAVCodecContext_Input->width,pAVCodecContext_Input->height,pFrameRGB->data[0]);
 				//TRACE(_T("Frame %lu\n"), pffmpeg->g_FrameCounter);
 			
 			}
@@ -297,7 +297,7 @@ void ffmpeg::ffmpeg_start(CString URLCString)
 		g_LoseFrameCounter = 0;
 		g_FrameCounter = 0;
 
-		g_OpencvHdlr.opencv_init();
+		g_OpencvHdlr.Start();
 
 		AfxBeginThread((AFX_THREADPROC)RecvRTSPThread,this,THREAD_PRIORITY_HIGHEST);
 		AfxBeginThread((AFX_THREADPROC)UpdateUIThread,this,THREAD_PRIORITY_NORMAL);
@@ -310,7 +310,7 @@ void ffmpeg::ffmpeg_end(void)
 
 		g_StartRecvRTSPFlag = false;
 
-		g_OpencvHdlr.opencv_stop();
+		g_OpencvHdlr.Stop();
 	}
 }
 
