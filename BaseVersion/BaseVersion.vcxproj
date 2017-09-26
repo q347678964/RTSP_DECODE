@@ -115,6 +115,7 @@
     <ClInclude Include="Example.h" />
     <ClInclude Include="ffmpeg.h" />
     <ClInclude Include="FormatChange.h" />
+    <ClInclude Include="OpencvGaussMode.h" />
     <ClInclude Include="opencv.h" />
     <ClInclude Include="OpencvMotionDetection.h" />
     <ClInclude Include="OpencvSelf.h" />
@@ -130,6 +131,7 @@
     <ClCompile Include="ffmpeg.cpp" />
     <ClCompile Include="FormatChange.cpp" />
     <ClCompile Include="opencv.cpp" />
+    <ClCompile Include="OpencvGaussMode.cpp" />
     <ClCompile Include="OpencvMotionDetection.cpp" />
     <ClCompile Include="OpencvSelf.cpp" />
     <ClCompile Include="stdafx.cpp">

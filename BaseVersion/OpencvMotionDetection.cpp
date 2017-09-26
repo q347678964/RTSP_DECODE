@@ -70,7 +70,7 @@ DWORD WINAPI CandyThread(LPVOID pParam)
 		//cvSmooth(g_pCannyImg3rd,g_pCandyImgErode,CV_BLUR,3,1); //平均滤波
 		cvSmooth(g_pCannyImg3rd,g_pCandyImgErode,CV_MEDIAN,3,1);  //  中值滤波
 
-		cvShowImage(CFG_OPENCV_OUTPUT_WIN, g_pCandyImgErode);
+		cvShowImage("MotionDetect窗口", g_pCandyImgErode);
 
 		pOpencvMotionDetection->g_BlackPixelRate = pOpencvMotionDetection->BinBlackPixelRate(g_pCandyImgErode);		//获取黑点的概率
 
@@ -98,8 +98,7 @@ void OpencvMotionDetection::Start(void)
 	this->g_SaveImageCounter = 0;
 	this->g_BlackPixelRate = 0.0;
 
-	cvNamedWindow(CFG_OPENCV_RTSP_WIN,CV_WINDOW_AUTOSIZE);
-	cvNamedWindow(CFG_OPENCV_OUTPUT_WIN,CV_WINDOW_AUTOSIZE);
+	cvNamedWindow("MotionDetect窗口",CV_WINDOW_AUTOSIZE);
 
 	InitializeCriticalSection(&g_CS);	
 
@@ -129,8 +128,7 @@ void OpencvMotionDetection::Stop(void)
 	this->g_BlackPixelRate = 0.0;
 
 
-	cvDestroyWindow(CFG_OPENCV_RTSP_WIN);
-	cvDestroyWindow(CFG_OPENCV_OUTPUT_WIN);
+	cvDestroyWindow("MotionDetect窗口");
 
 	ReleaseIplImage(g_pSrcImage);	
 	ReleaseIplImage(g_pCannySrcImg);
@@ -170,8 +168,6 @@ void OpencvMotionDetection::Handle(IplImage *ParamImage)
 			return ;
 
 		memcpy(g_pSrcImage->imageData,ParamImage->imageData,width*height*3);
-
-		cvShowImage(CFG_OPENCV_RTSP_WIN,g_pSrcImage);
 	#if 1
 		if(this->g_FrameCounter % 10 == 0){		//每60帧，更新一次Candy检测
 			memcpy(g_pCannySrcImg->imageData,ParamImage->imageData,width*height*3);

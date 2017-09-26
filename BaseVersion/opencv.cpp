@@ -16,10 +16,17 @@ using namespace std;
 #include "highgui.h"
 #include "CvvImage.h"
 #include <opencv2/opencv.hpp>
+
+#if DEFINE_MOTION_DETECTION
 #include "OpencvMotionDetection.h"
+OpencvMotionDetection cvMotionDetect
 
+#elif DEFINE_GAUSS_MODE
+#include "OpencvGaussMode.h"
+OpencvGaussMode cvGaussMode;
 
-OpencvMotionDetection cvMotionDetect;
+#endif
+
 
 IplImage *SrcImage;
 
@@ -70,10 +77,17 @@ void opencv::HandleImage(int width ,int height, unsigned char *rgbdata)
 	}else{
 		memcpy(SrcImage->imageData,rgbdata,width*height*3);
 
-		cvMotionDetect.Handle(SrcImage);
+		cvShowImage("Opencv源窗口",SrcImage);
 
+#if DEFINE_MOTION_DETECTION
+		cvMotionDetect.Handle(SrcImage);
 		this->UpdateJPGInfo(cvMotionDetect.g_SaveImageCounter);
 		this->UpdateBlackPixelRate(cvMotionDetect.g_BlackPixelRate);
+#elif DEFINE_GAUSS_MODE
+		cvGaussMode.Handle(SrcImage);
+		this->UpdateBlackPixelRate(cvGaussMode.g_BlackPixelRate);
+#endif
+
 	}
 
 	//cvReleaseImage(&g_pSrcImage);
@@ -86,15 +100,25 @@ void opencv::Start(void)
 
 	this->g_StartFlag = 1;
 
-	cvMotionDetect.Start();
+	cvNamedWindow("Opencv源窗口",CV_WINDOW_AUTOSIZE);
 
+#if DEFINE_MOTION_DETECTION
+	cvMotionDetect.Start();
+#elif DEFINE_GAUSS_MODE
+	cvGaussMode.Start();
+#endif
     return ;
 }
 
 void opencv::Stop(void){
 
+#if DEFINE_MOTION_DETECTION
 	cvMotionDetect.Stop();
+#elif DEFINE_GAUSS_MODE
+	cvGaussMode.Stop();
+#endif
 
+	cvDestroyWindow("Opencv源窗口");
 	this->g_StartFlag = 0;
 
 	if(SrcImage!=NULL){
