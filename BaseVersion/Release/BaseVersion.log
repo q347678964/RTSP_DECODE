@@ -1,18 +1,56 @@
-﻿Build started 2017/9/27 0:03:13.
+﻿Build started 2017/9/28 22:57:02.
      1>Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Release\BaseVersion.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          All outputs are up-to-date.
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IF:\project\FFMPEG\BaseVersion\FFMPEG\include /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2 /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Release\BaseVersion.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt BaseVersion.cpp BaseVersionDlg.cpp Example.cpp ffmpeg.cpp FormatChange.cpp opencv.cpp OpencvGaussMode.cpp OpencvMotionDetection.cpp OpencvSelf.cpp
-         BaseVersion.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IF:\project\FFMPEG\BaseVersion\FFMPEG\include /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2 /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Release\BaseVersion.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt OpencvAbsDetection.cpp BaseVersionDlg.cpp BinaryAreaCombine.cpp ffmpeg.cpp opencv.cpp OpencvGaussMode.cpp OpencvMotionDetection.cpp OpencvSelf.cpp
+         OpencvAbsDetection.cpp
+     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
+     1>f:\project\ffmpeg\baseversion\baseversion\OpencvAbsDetection.h(15): warning C4584: “OpencvAbsDetection”: 基类“FormatChange”已是“opencvself”的基类
+                 f:\project\ffmpeg\baseversion\baseversion\FormatChange.h(5) : 参见“FormatChange”的声明
+                 f:\project\ffmpeg\baseversion\baseversion\OpencvSelf.h(9) : 参见“opencvself”的声明
+     1>OpencvAbsDetection.cpp(75): warning C4018: “<”: 有符号/无符号不匹配
          BaseVersionDlg.cpp
      1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
      1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
      1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
      1>f:\project\ffmpeg\baseversion\ffmpeg\include\libavutil\rational.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-         Example.cpp
+         BinaryAreaCombine.cpp
+     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
+     1>BinaryAreaCombine.cpp(124): warning C4005: “MIN”: 宏重定义
+                 F:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2/core/types_c.h(287) : 参见“MIN”的前一个定义
+     1>BinaryAreaCombine.cpp(125): warning C4005: “MAX”: 宏重定义
+                 F:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2/core/types_c.h(291) : 参见“MAX”的前一个定义
+     1>BinaryAreaCombine.cpp(137): warning C4018: “>=”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(138): warning C4018: “>=”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(178): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(186): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(193): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(250): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(257): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(259): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(276): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(277): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(277): warning C4018: “>”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(338): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>BinaryAreaCombine.cpp(355): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(377): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>BinaryAreaCombine.cpp(393): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(413): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(416): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(418): warning C4018: “>”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(420): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(422): warning C4018: “>”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(438): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(476): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(484): warning C4018: “<”: 有符号/无符号不匹配
+     1>BinaryAreaCombine.cpp(488): warning C4018: “<”: 有符号/无符号不匹配
          ffmpeg.cpp
      1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
@@ -58,12 +96,10 @@
                  F:\project\FFMPEG\BaseVersion\FFMPEG\include\libavcodec/avcodec.h(4901) : 参见“avcodec_decode_video2”的声明
      1>ffmpeg.cpp(257): warning C4996: 'av_free_packet': 被声明为已否决
                  F:\project\FFMPEG\BaseVersion\FFMPEG\include\libavcodec/avcodec.h(4558) : 参见“av_free_packet”的声明
-     1>ffmpeg.cpp(287): warning C4800: “unsigned int”: 将值强制为布尔值“true”或“false”(性能警告)
-         FormatChange.cpp
          opencv.cpp
      1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\OpencvGaussMode.h(13): warning C4584: “OpencvGaussMode”: 基类“FormatChange”已是“opencvself”的基类
+     1>f:\project\ffmpeg\baseversion\baseversion\OpencvAbsDetection.h(15): warning C4584: “OpencvAbsDetection”: 基类“FormatChange”已是“opencvself”的基类
                  f:\project\ffmpeg\baseversion\baseversion\FormatChange.h(5) : 参见“FormatChange”的声明
                  f:\project\ffmpeg\baseversion\baseversion\OpencvSelf.h(9) : 参见“opencvself”的声明
          OpencvGaussMode.cpp
@@ -76,6 +112,7 @@
      1>f:\project\ffmpeg\baseversion\baseversion\OpencvGaussMode.h(13): warning C4584: “OpencvGaussMode”: 基类“FormatChange”已是“opencvself”的基类
                  f:\project\ffmpeg\baseversion\baseversion\FormatChange.h(5) : 参见“FormatChange”的声明
                  f:\project\ffmpeg\baseversion\baseversion\OpencvSelf.h(9) : 参见“opencvself”的声明
+     1>OpencvGaussMode.cpp(84): warning C4018: “<”: 有符号/无符号不匹配
          OpencvMotionDetection.cpp
      1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
@@ -91,11 +128,13 @@
      1>OpencvSelf.cpp(66): warning C4018: “<”: 有符号/无符号不匹配
      1>OpencvSelf.cpp(67): warning C4018: “<”: 有符号/无符号不匹配
        ResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /l"0x0804" /IRelease\ /nologo /fo"Release\BaseVersion.res" BaseVersion.rc 
+         All outputs are up-to-date.
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\project\FFMPEG\BaseVersion\Release\BaseVersion.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:F:\project\FFMPEG\BaseVersion\FFMPEG\lib /LIBPATH:F:\project\FFMPEG\BaseVersion\Opencvlib\build\x86\vc10\lib avcodec.lib avdevice.lib avfilter.lib avformat.lib avutil.lib postproc.lib swresample.lib swscale.lib opencv_core2410d.lib opencv_highgui2410d.lib opencv_video2410d.lib opencv_ml2410d.lib opencv_legacy2410d.lib opencv_imgproc2410d.lib /MANIFEST /ManifestFile:"Release\BaseVersion.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\project\FFMPEG\BaseVersion\Release\BaseVersion.pdb" /SUBSYSTEM:WINDOWS /OPT:NOREF /OPT:ICF /LTCG /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\project\FFMPEG\BaseVersion\Release\BaseVersion.lib" /MACHINE:X86 Release\BaseVersion.res
+         Release\OpencvAbsDetection.obj
          Release\BaseVersion.obj
          Release\BaseVersionDlg.obj
+         Release\BinaryAreaCombine.obj
          Release\CvvImage.obj
          Release\Example.obj
          Release\ffmpeg.obj
@@ -117,4 +156,4 @@
 
 生成成功。
 
-Time Elapsed 00:00:08.18
+Time Elapsed 00:00:09.61

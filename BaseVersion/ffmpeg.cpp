@@ -265,26 +265,27 @@ DWORD WINAPI RecvRTSPThread(LPVOID pParam)
 
 DWORD WINAPI UpdateUIThread(LPVOID pParam){
 	ffmpeg *pffmpeg = (ffmpeg*)pParam;
+	unsigned int SecondCounter = 0;
 	while(pffmpeg->g_StartRecvRTSPFlag){
 		pffmpeg->UpdateFrameInfo(pffmpeg->g_FrameCounter);
-		Sleep(500);
+		pffmpeg->UpdateTimeInfo(SecondCounter++);
+		//pffmpeg->UpdateTimerStatus(SecondCounter%2);
+		Sleep(1000);
 	}
 	return 0;
 }
 
 DWORD WINAPI LoseFrameCheckThread(LPVOID pParam){
 	ffmpeg *pffmpeg = (ffmpeg*)pParam;
-	unsigned int SecondCounter = 0;
+
 	while(pffmpeg->g_StartRecvRTSPFlag){
 		if(pffmpeg->g_LoseFrameCounter>=CFG_LOSE_FRAME_RESTART){
 			pffmpeg->ffmpeg_end();
-			Sleep(3000);
-			pffmpeg->ffmpeg_start(pffmpeg->g_URLCString);
+			//Sleep(3000);
+			//pffmpeg->ffmpeg_start(pffmpeg->g_URLCString);
 			return 0;
 		}
 		Sleep(1000);
-		pffmpeg->UpdateTimeInfo(SecondCounter++);
-		pffmpeg->UpdateTimerStatus(SecondCounter%2);
 	}
 	return 0;
 }

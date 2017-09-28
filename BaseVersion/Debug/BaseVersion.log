@@ -1,29 +1,27 @@
-﻿Build started 2017/9/27 0:02:05.
-     1>Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" on node 2 (build target(s)).
+﻿生成启动时间为 2017/9/28 18:57:02。
+     1>项目“D:\Projects\VS2010\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
-         Creating "Debug\BaseVersion.unsuccessfulbuild" because "AlwaysCreate" was specified.
+         正在创建“Debug\BaseVersion.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
        ClCompile:
-         All outputs are up-to-date.
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2 /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv /IF:\project\FFMPEG\BaseVersion\Opencvlib\build\include /IF:\project\FFMPEG\BaseVersion\FFMPEG\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\BaseVersion.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt OpencvGaussMode.cpp
-         OpencvGaussMode.cpp
-     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
-     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\legacy\blobtrack.hpp(187): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : 参见“strcpy”的声明
-     1>f:\project\ffmpeg\baseversion\opencvlib\build\include\opencv2\legacy\blobtrack.hpp(256): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : 参见“strcat”的声明
-     1>f:\project\ffmpeg\baseversion\baseversion\opencvgaussmode.h(13): warning C4584: “OpencvGaussMode”: 基类“FormatChange”已是“opencvself”的基类
-                 f:\project\ffmpeg\baseversion\baseversion\formatchange.h(5) : 参见“FormatChange”的声明
-                 f:\project\ffmpeg\baseversion\baseversion\opencvself.h(9) : 参见“opencvself”的声明
+         所有输出均为最新。
+         D:\Softwares\VisualStudio2010\VC\bin\CL.exe /c /ID:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2 /ID:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\include\opencv /ID:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\include /ID:\Projects\VS2010\FFMPEG\BaseVersion\FFMPEG\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\BaseVersion.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt OpencvAbsDetection.cpp
+         OpencvAbsDetection.cpp
+     1>d:\projects\vs2010\ffmpeg\baseversion\opencvlib\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\softwares\visualstudio2010\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>d:\projects\vs2010\ffmpeg\baseversion\baseversion\opencvabsdetection.h(15): warning C4584: “OpencvAbsDetection”: 基类“FormatChange”已是“opencvself”的基类
+                 d:\projects\vs2010\ffmpeg\baseversion\baseversion\formatchange.h(5) : 参见“FormatChange”的声明
+                 d:\projects\vs2010\ffmpeg\baseversion\baseversion\opencvself.h(9) : 参见“opencvself”的声明
        ResourceCompile:
-         All outputs are up-to-date.
+         所有输出均为最新。
        ManifestResourceCompile:
-         All outputs are up-to-date.
+         所有输出均为最新。
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.exe" /INCREMENTAL /NOLOGO /LIBPATH:F:\project\FFMPEG\BaseVersion\Opencvlib\build\x86\vc10\lib /LIBPATH:F:\project\FFMPEG\BaseVersion\FFMPEG\lib avcodec.lib avdevice.lib avfilter.lib avformat.lib avutil.lib postproc.lib swresample.lib swscale.lib opencv_core2410d.lib opencv_highgui2410d.lib opencv_video2410d.lib opencv_ml2410d.lib opencv_legacy2410d.lib opencv_imgproc2410d.lib /MANIFEST /ManifestFile:"Debug\BaseVersion.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.lib" /MACHINE:X86 Debug\BaseVersion.res
+         D:\Softwares\VisualStudio2010\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\VS2010\FFMPEG\BaseVersion\Debug\BaseVersion.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\x86\vc10\lib /LIBPATH:D:\Projects\VS2010\FFMPEG\BaseVersion\FFMPEG\lib avcodec.lib avdevice.lib avfilter.lib avformat.lib avutil.lib postproc.lib swresample.lib swscale.lib opencv_core2410d.lib opencv_highgui2410d.lib opencv_video2410d.lib opencv_ml2410d.lib opencv_legacy2410d.lib opencv_imgproc2410d.lib /MANIFEST /ManifestFile:"Debug\BaseVersion.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\Projects\VS2010\FFMPEG\BaseVersion\Debug\BaseVersion.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\VS2010\FFMPEG\BaseVersion\Debug\BaseVersion.lib" /MACHINE:X86 Debug\BaseVersion.res
          Debug\BaseVersion.exe.embed.manifest.res
+         Debug\OpencvAbsDetection.obj
          Debug\BaseVersion.obj
          Debug\BaseVersionDlg.obj
+         Debug\BinaryAreaCombine.obj
          Debug\CvvImage.obj
          Debug\Example.obj
          Debug\ffmpeg.obj
@@ -34,16 +32,16 @@
          Debug\OpencvSelf.obj
          Debug\stdafx.obj
        Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\BaseVersion.exe.embed.manifest" /manifest Debug\BaseVersion.exe.intermediate.manifest "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
-         All outputs are up-to-date.
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\BaseVersion.exe.embed.manifest" /manifest Debug\BaseVersion.exe.intermediate.manifest D:\Softwares\VisualStudio2010\VC\Include\Manifest\dpiaware.manifest
+         所有输出均为最新。
        LinkEmbedManifest:
-         All outputs are up-to-date.
-         BaseVersion.vcxproj -> F:\project\FFMPEG\BaseVersion\Debug\BaseVersion.exe
+         所有输出均为最新。
+         BaseVersion.vcxproj -> D:\Projects\VS2010\FFMPEG\BaseVersion\Debug\BaseVersion.exe
        FinalizeBuildStatus:
-         Deleting file "Debug\BaseVersion.unsuccessfulbuild".
-         Touching "Debug\BaseVersion.lastbuildstate".
-     1>Done Building Project "F:\project\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj" (build target(s)).
+         正在删除文件“Debug\BaseVersion.unsuccessfulbuild”。
+         正在对“Debug\BaseVersion.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“D:\Projects\VS2010\FFMPEG\BaseVersion\BaseVersion\BaseVersion.vcxproj”(build 个目标)的操作。
 
 生成成功。
 
-Time Elapsed 00:00:02.14
+已用时间 00:00:02.26

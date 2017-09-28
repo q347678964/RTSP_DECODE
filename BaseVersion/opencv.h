@@ -8,7 +8,8 @@ class opencv : public FormatChange{
 public:
 	bool g_StartFlag;
 	unsigned int g_FrameCounter;
-
+	bool g_HandlingFlag;
+	HANDLE hSemaphore;
 public:
 	opencv();
 	~opencv();

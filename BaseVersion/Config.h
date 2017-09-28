@@ -7,11 +7,13 @@
 #define EDIT_PRINT_TEXT_RGB				RGB(89,89,255)
 
 //FFMPEG 配置
-#define URL "rtsp://192.168.0.103:8554/live.sdp"
+//#define URL "rtsp://192.168.0.103:8554/live.sdp"
+//#define URL "rtsp://192.168.42.1/live"
+#define URL "rtsp://192.168.168.221/live"
 #define CFG_FFMPEG_SAVE_FILE			0
 #define CFG_SAVE_H264_PATH				"../Output/Temp.H264"
 #define CFG_SAVE_H264_PATH2				"../Output/Temp2.H264"
-#define CFG_RTSP_METHOD					"tcp"
+#define CFG_RTSP_METHOD					"udp"
 #define CFG_LOSE_FRAME_RESTART					120
 //OPENCV 配置
 #define CFG_OPENCV_MOTION_DETECT			1000
@@ -19,7 +21,10 @@
 #define CFG_OPENCV_OUTPUT_WIN				"图像处理结果"
 
 //图像识别库
-
+#define OPENCV_SRC_WINDOW_SHOW 0		//opencv.cpp
+#define GAUSS_SCALE 2
+#define ABS_DETECT_SCALE 2
 #define DEFINE_MOTION_DETECTION			0
-#define DEFINE_GAUSS_MODE				1
+#define DEFINE_GAUSS_MODE				0
+#define DEFINE_ABS_DETECTION		1
 #endif

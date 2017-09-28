@@ -19,12 +19,15 @@ using namespace std;
 
 #if DEFINE_MOTION_DETECTION
 #include "OpencvMotionDetection.h"
-OpencvMotionDetection cvMotionDetect
+OpencvMotionDetection cvMotionDetect;
 
 #elif DEFINE_GAUSS_MODE
 #include "OpencvGaussMode.h"
 OpencvGaussMode cvGaussMode;
 
+#elif DEFINE_ABS_DETECTION
+#include "OpencvAbsDetection.h"
+OpencvAbsDetection cvAbsDetect;
 #endif
 
 
@@ -64,10 +67,44 @@ void opencv::UpdateBlackPixelRate(float Num)
 	MainDlg->UIOperationCB(IDC_EDIT_BlackPixelShow,TempCString);
 }
 
+DWORD WINAPI ImageHandleThread(LPVOID pParam)
+{
+	opencv* popencv = (opencv*)(pParam);
+	while(popencv->g_StartFlag){
+		WaitForSingleObject(popencv->hSemaphore, INFINITE);
 
+		if(popencv->g_StartFlag == 0){
+			return 0;
+		}
+
+		popencv->g_HandlingFlag = 1;
+#if OPENCV_SRC_WINDOW_SHOW
+		cvShowImage("Opencv源窗口",SrcImage);
+#endif
+	
+#if DEFINE_MOTION_DETECTION
+		cvMotionDetect.Handle(SrcImage);
+		popencv->UpdateJPGInfo(cvMotionDetect.g_SaveImageCounter);
+		popencv->UpdateBlackPixelRate(cvMotionDetect.g_BlackPixelRate);
+#elif DEFINE_GAUSS_MODE
+		cvGaussMode.Handle(SrcImage);
+		popencv->UpdateBlackPixelRate(cvGaussMode.g_BlackPixelRate);
+#elif DEFINE_ABS_DETECTION
+		cvAbsDetect.Handle(SrcImage);
+		popencv->UpdateJPGInfo(cvAbsDetect.g_SaveImageCounter);
+		popencv->UpdateBlackPixelRate(cvAbsDetect.g_BlackPixelRate);
+#endif
+		popencv->g_HandlingFlag = 0;
+	}
+	return 0;
+}
 void opencv::HandleImage(int width ,int height, unsigned char *rgbdata)
 {
-	if(this->g_StartFlag == 0)
+
+	if(this->g_StartFlag == 0){
+		return ;
+	}
+	if(this->g_HandlingFlag)		//正在处理上一帧，丢弃帧
 		return ;
 
 	this->g_FrameCounter++;
@@ -76,54 +113,62 @@ void opencv::HandleImage(int width ,int height, unsigned char *rgbdata)
 		SrcImage =  cvCreateImage(cvSize(width,height),IPL_DEPTH_8U ,3);
 	}else{
 		memcpy(SrcImage->imageData,rgbdata,width*height*3);
-
-		cvShowImage("Opencv源窗口",SrcImage);
-
-#if DEFINE_MOTION_DETECTION
-		cvMotionDetect.Handle(SrcImage);
-		this->UpdateJPGInfo(cvMotionDetect.g_SaveImageCounter);
-		this->UpdateBlackPixelRate(cvMotionDetect.g_BlackPixelRate);
-#elif DEFINE_GAUSS_MODE
-		cvGaussMode.Handle(SrcImage);
-		this->UpdateBlackPixelRate(cvGaussMode.g_BlackPixelRate);
-#endif
-
+		ReleaseSemaphore(hSemaphore, 1, NULL);
 	}
-
-	//cvReleaseImage(&g_pSrcImage);
 }
 
 
+//开始需要先开始底层线程，防止底层操作空的底层
 void opencv::Start(void)
 {
-	this->g_FrameCounter = 0;
-
-	this->g_StartFlag = 1;
-
+#if OPENCV_SRC_WINDOW_SHOW
 	cvNamedWindow("Opencv源窗口",CV_WINDOW_AUTOSIZE);
+#endif
 
 #if DEFINE_MOTION_DETECTION
 	cvMotionDetect.Start();
 #elif DEFINE_GAUSS_MODE
 	cvGaussMode.Start();
+#elif DEFINE_ABS_DETECTION
+	cvAbsDetect.Start();
 #endif
+
+	this->g_FrameCounter = 0;
+
+	this->g_StartFlag = 1;
+
+	this->g_HandlingFlag = 0;
+
+	hSemaphore = CreateSemaphore(NULL, 0, 1, NULL);
+
+	AfxBeginThread((AFX_THREADPROC)ImageHandleThread,this,THREAD_PRIORITY_HIGHEST);
+
     return ;
 }
 
+//停止先要顶层先停下来，防止顶层线程继续操作底层函数
 void opencv::Stop(void){
+	while(this->g_HandlingFlag)		//等待底层处理完成
+		Sleep(500) ;
 
 #if DEFINE_MOTION_DETECTION
 	cvMotionDetect.Stop();
 #elif DEFINE_GAUSS_MODE
 	cvGaussMode.Stop();
+#elif DEFINE_ABS_DETECTION
+	cvAbsDetect.Stop();
 #endif
 
+#if OPENCV_SRC_WINDOW_SHOW
 	cvDestroyWindow("Opencv源窗口");
+#endif
+
 	this->g_StartFlag = 0;
 
 	if(SrcImage!=NULL){
 		cvReleaseImage(&SrcImage);
 		SrcImage = NULL;
 	}
+
 	return;
 }

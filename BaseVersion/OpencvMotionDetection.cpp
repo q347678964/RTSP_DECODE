@@ -60,7 +60,7 @@ DWORD WINAPI CandyThread(LPVOID pParam)
 	while(pOpencvMotionDetection->g_StartFlag){
 		WaitForSingleObject(hSemaphore, INFINITE);
 
-		EnterCriticalSection(&pOpencvMotionDetection->g_CS);		// 进入临界区
+		pOpencvMotionDetection->g_HandlingFlag = 1;
 
 		cvCanny(g_pCannySrcImg, g_pCannyImg1st, g_ThreadCandy, g_ThreadCandy * 3, 3);  //提取边缘
 		cvAbsDiff(g_pCannyImg1st,g_pCannyImg2nd,g_pCannyImg3rd);			//与上一帧做图像绝对值减法g_pCannyImg3rd = abs(g_pCannyImg1st - g_pCannyImg2nd）
@@ -81,7 +81,7 @@ DWORD WINAPI CandyThread(LPVOID pParam)
 			pOpencvMotionDetection->SaveImage(g_pCannySrcImg);
 		}
 
-		LeaveCriticalSection(&pOpencvMotionDetection->g_CS);		// 离开临界区
+		pOpencvMotionDetection->g_HandlingFlag = 0;
 	}
 	return 0;
 }
@@ -97,14 +97,12 @@ void OpencvMotionDetection::Start(void)
 	this->g_FrameCounter = 0;
 	this->g_SaveImageCounter = 0;
 	this->g_BlackPixelRate = 0.0;
-
+	this->g_HandlingFlag = 0;
 	cvNamedWindow("MotionDetect窗口",CV_WINDOW_AUTOSIZE);
-
-	InitializeCriticalSection(&g_CS);	
 
 	hSemaphore = CreateSemaphore(NULL, 0, 1, NULL);
 	
-	AfxBeginThread((AFX_THREADPROC)CandyThread,this,THREAD_PRIORITY_NORMAL);
+	AfxBeginThread((AFX_THREADPROC)CandyThread,this,THREAD_PRIORITY_HIGHEST);
 	//int nThresholdEdge = 1;  
     //cvCreateTrackbar("Candy阈值",CFG_OPENCV_RTSP_WIN, &nThresholdEdge, 100, on_trackbar);	//增加边缘检测阈值到窗体内，回调函数是on_trackbar
 	//on_trackbar(1); 
@@ -120,7 +118,8 @@ void OpencvMotionDetection::ReleaseIplImage(IplImage* &IplIma)
 
 void OpencvMotionDetection::Stop(void)
 {
-	EnterCriticalSection(&g_CS);		// 进入临界区
+	while(this->g_HandlingFlag)	//等待处理完成
+		Sleep(500);
 
 	this->g_StartFlag = 0;
 	this->g_FrameCounter = 0;
@@ -137,30 +136,31 @@ void OpencvMotionDetection::Stop(void)
 	ReleaseIplImage(g_pCannyImg3rd);
 	ReleaseIplImage(g_pCandyImgErode);
 
-	LeaveCriticalSection(&g_CS);		// 离开临界区
 }
-
+#define MOTION_DETECT_SCALE 2
 void OpencvMotionDetection::Handle(IplImage *ParamImage)
 {
-	EnterCriticalSection(&g_CS);		// 进入临界区
-	unsigned int width = ParamImage->width;
-	unsigned height = ParamImage->height;
-
 	if(this->g_StartFlag == 0)
 		return;
 
+	if(this->g_HandlingFlag)	//正在处理中，丢掉该帧
+		return ;
+
+	unsigned int width = ParamImage->width;
+	unsigned height = ParamImage->height;
 	this->g_FrameCounter++;
 
 	if(g_FrameCounter == 1){		//第一帧数据来创建图像
 		g_pSrcImage = cvCreateImage(cvSize(width,height),IPL_DEPTH_8U ,3);
-		g_pCannySrcImg = cvCreateImage(cvGetSize(g_pSrcImage), IPL_DEPTH_8U, 3);  
-		g_pCannyImg1st = cvCreateImage(cvGetSize(g_pSrcImage), IPL_DEPTH_8U, 1); 
-		g_pCannyImg2nd = cvCreateImage(cvGetSize(g_pSrcImage), IPL_DEPTH_8U, 1); 
-		g_pCannyImg3rd = cvCreateImage(cvGetSize(g_pSrcImage), IPL_DEPTH_8U, 1); 
-		g_pCandyImgErode = cvCreateImage(cvGetSize(g_pCannyImg1st), IPL_DEPTH_8U, 1);
-
+		g_pCannySrcImg = cvCreateImage(cvSize(width/MOTION_DETECT_SCALE,height/MOTION_DETECT_SCALE), IPL_DEPTH_8U, 3);  
+		g_pCannyImg1st = cvCreateImage(cvSize(width/MOTION_DETECT_SCALE,height/MOTION_DETECT_SCALE), IPL_DEPTH_8U, 1); 
+		g_pCannyImg2nd = cvCreateImage(cvSize(width/MOTION_DETECT_SCALE,height/MOTION_DETECT_SCALE), IPL_DEPTH_8U, 1); 
+		g_pCannyImg3rd = cvCreateImage(cvSize(width/MOTION_DETECT_SCALE,height/MOTION_DETECT_SCALE), IPL_DEPTH_8U, 1); 
+		g_pCandyImgErode = cvCreateImage(cvSize(width/MOTION_DETECT_SCALE,height/MOTION_DETECT_SCALE), IPL_DEPTH_8U, 1);
+		
+		memcpy(g_pSrcImage->imageData,ParamImage->imageData,width*height*3);
+		cvResize(g_pSrcImage,g_pCannySrcImg);
 		cvCanny(g_pCannySrcImg, g_pCannyImg1st, g_ThreadCandy, g_ThreadCandy * 3, 3);  
-		memcpy(g_pCannyImg2nd->imageData,g_pCannyImg1st->imageData,width*height);
 
 	}else{
 
@@ -168,17 +168,15 @@ void OpencvMotionDetection::Handle(IplImage *ParamImage)
 			return ;
 
 		memcpy(g_pSrcImage->imageData,ParamImage->imageData,width*height*3);
+		cvResize(g_pSrcImage,g_pCannySrcImg);
 	#if 1
-		if(this->g_FrameCounter % 10 == 0){		//每60帧，更新一次Candy检测
-			memcpy(g_pCannySrcImg->imageData,ParamImage->imageData,width*height*3);
+		if(this->g_FrameCounter % 10 == 0){		//每5帧，更新一次Candy检测
 			ReleaseSemaphore(hSemaphore, 1, NULL);
-
 		}
 	#endif
 		if(cvWaitKey(10)=='A'){
 
 		}
 	}
-	LeaveCriticalSection(&g_CS);		// 离开临界区
 }
 

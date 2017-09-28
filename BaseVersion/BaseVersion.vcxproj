@@ -53,13 +53,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>F:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2;F:\project\FFMPEG\BaseVersion\Opencvlib\build\include\opencv;F:\project\FFMPEG\BaseVersion\Opencvlib\build\include;F:\project\FFMPEG\BaseVersion\FFMPEG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\include\opencv2;D:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\include\opencv;D:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\include;D:\Projects\VS2010\FFMPEG\BaseVersion\FFMPEG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib;opencv_core2410d.lib;opencv_highgui2410d.lib;opencv_video2410d.lib;opencv_ml2410d.lib;opencv_legacy2410d.lib;opencv_imgproc2410d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>F:\project\FFMPEG\BaseVersion\Opencvlib\build\x86\vc10\lib;F:\project\FFMPEG\BaseVersion\FFMPEG\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Projects\VS2010\FFMPEG\BaseVersion\Opencvlib\build\x86\vc10\lib;D:\Projects\VS2010\FFMPEG\BaseVersion\FFMPEG\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -110,11 +110,13 @@
   <ItemGroup>
     <ClInclude Include="BaseVersion.h" />
     <ClInclude Include="BaseVersionDlg.h" />
+    <ClInclude Include="BinaryAreaCombine.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CvvImage.h" />
     <ClInclude Include="Example.h" />
     <ClInclude Include="ffmpeg.h" />
     <ClInclude Include="FormatChange.h" />
+    <ClInclude Include="OpencvAbsDetection.h" />
     <ClInclude Include="OpencvGaussMode.h" />
     <ClInclude Include="opencv.h" />
     <ClInclude Include="OpencvMotionDetection.h" />
@@ -124,8 +126,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="OpencvAbsDetection.cpp" />
     <ClCompile Include="BaseVersion.cpp" />
     <ClCompile Include="BaseVersionDlg.cpp" />
+    <ClCompile Include="BinaryAreaCombine.cpp" />
     <ClCompile Include="CvvImage.cpp" />
     <ClCompile Include="Example.cpp" />
     <ClCompile Include="ffmpeg.cpp" />

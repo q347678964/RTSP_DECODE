@@ -13,13 +13,14 @@
 class OpencvGaussMode : public FormatChange,public opencvself{
 
 public:
-	CRITICAL_SECTION g_CS;              // 临界区结构对象
+	bool g_HandlingFlag;
 	HANDLE hSemaphore;
 
 	bool g_StartFlag;
 	unsigned long g_FrameCounter;
 	unsigned long g_SaveImageCounter;
 	float g_BlackPixelRate;
+	unsigned long g_LoseFrameCounter;
 public:
 	OpencvGaussMode();
 	~OpencvGaussMode();
